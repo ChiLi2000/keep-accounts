@@ -25,10 +25,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "~@/assets/style/helper.scss";
 
-
-nav{
-
+ nav{
+  @extend %outerShadow;
   display: flex;
   flex-direction: row;
   font-size: 12px;
@@ -39,7 +39,7 @@ nav{
     flex-direction: column;
     padding: 2px 0;
     width: 33.33333333%;
-    svg{
+    ::v-deep svg{
       width: 32px;
       height: 32px;
     }
