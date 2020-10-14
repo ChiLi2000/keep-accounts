@@ -6,9 +6,11 @@ import store from './store'
 import Footer from "@/components/Footer.vue";
 import Layout from "@/components/Layout.vue";
 import Icon from "@/components/Icon.vue";
+import Header from "@/components/Header.vue";
 
 Vue.config.productionTip = false
 
+Vue.component("Header",Header)
 Vue.component("Footer",Footer)
 Vue.component("Layout",Layout)
 Vue.component("Icon",Icon)
