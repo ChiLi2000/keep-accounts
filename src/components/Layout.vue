@@ -1,6 +1,6 @@
 <template>
   <div class="layout-wrapper" >
-    <Header/>
+    <Header />
     <div class="content">
       <slot />
     </div>
@@ -25,5 +25,7 @@ name: "Layout"
     flex-grow: 1;
   }
 }
+
+
 
 </style>

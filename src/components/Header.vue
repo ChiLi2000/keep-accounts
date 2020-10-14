@@ -1,6 +1,6 @@
 <template>
-  <div class="header">
-    <div class="top">
+  <div class="outer">
+    <div class="top" :class="classPrefix && `${classPrefix}-top`">
       <div class="time">
         2020年10月
         <Icon name="down" class="icon"></Icon>
@@ -20,7 +20,9 @@
 
 <script lang="ts">
 export default {
-  name: "Header"
+  name: "Header",
+  props: ["classPrefix"],
+
 };
 </script>
 
@@ -28,7 +30,7 @@ export default {
 
 @import "~@/assets/style/helper.scss";
 
-.header {
+.outer {
   background-color: #fff;
 
   .top {
@@ -56,12 +58,11 @@ export default {
     text-align: center;
 
     li {
-
       width: 50%;
       display: flex;
       flex-direction: column;
       padding: 8px 0;
-      margin: 0 10px;
+      margin:$out-margin;
 
       span{
         font-size:28px;
