@@ -25,7 +25,15 @@ $font-height:600;
     inset 0 3px 3px -3px $color-shadow;
 }
 
-$out-margin:0 10px;
-$out-padding: 12px 10px;
+$out-margin:0 16px;
+$out-padding: 14px 16px;
 $color-shadow: #fff;
 $textLighterColor: #999;
+
+%clearFix {
+  &::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+}
