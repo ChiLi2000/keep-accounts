@@ -1,7 +1,9 @@
 <template>
-  <div class="date" :class="classPrefix && `${classPrefix}-wrapper`">
-    10月14日
+  <div class="date-outer" :class="classPrefix && `${classPrefix}-wrapper`">
+  <div class="date" :class="classPrefix && `${classPrefix}-content`">
+    2020年10月
     <Icon name="down" class="down_icon"></Icon>
+  </div>
   </div>
 </template>
 
@@ -15,13 +17,17 @@ export default {
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
 
-.date {
-  background: #F5F5F5;
-  border: 1px solid #E5E5E5;
-  border-radius: 25px;
-  padding: 4px 8px;
-  .down_icon {
-    margin-left: 4px;
+.date-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .date{
+    font-weight: $font-height;
+    margin: 12px 0;
+    font-size: 20px;
+    border: 1px solid #E5E5E5;
+    border-radius: 25px;
+    padding: $padding-radio;
   }
 }
 

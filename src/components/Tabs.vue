@@ -1,6 +1,6 @@
 <template>
   <ul class="tabs" :class="classPrefix && `${classPrefix}-wrapper`">
-    <li class="selected">支出<slot/></li>
+    <li class="selected" >支出<slot/></li>
     <li>收入</li>
   </ul>
 </template>
@@ -22,7 +22,7 @@ name: "Tabs",
     width: 50%;
     display: flex;
     flex-direction: column;
-    padding: 4px 8px;
+    padding: $padding-radio;
     margin: $out-margin;
   }
   //li.selected {

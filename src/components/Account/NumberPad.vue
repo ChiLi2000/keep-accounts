@@ -34,14 +34,14 @@ export default {
     @extend %innerShadow;
     font-size: 36px;
     font-family: Consolas, monaspace, serif;
-    padding: 6px 16px;
+    padding: 6px 14px;
     text-align: right;
     height: 60px;
   }
 
   .buttons {
     @extend %clearFix;
-    margin:8px 16px;
+    margin:8px 14px;
     button {
       width: 25%;
       height: 56px;

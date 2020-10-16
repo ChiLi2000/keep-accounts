@@ -7,8 +7,8 @@
         <span>.</span>
       </div>
       <div class="smart">
-        <Tabs class-prefix="tabs"/>
-        <Date />
+        <Tabs class-prefix="tabs" class="tabs"/>
+        <Date class-prefix="date"/>
       </div>
     </div>
     <div class="account-center">
@@ -60,12 +60,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: $out-padding;
-
 }
 
 ::v-deep .navbar{
   @extend %item;
+  padding: $out-padding;
   border-bottom:1px solid gray;
   svg{
     width: 24px;
@@ -75,9 +74,25 @@ export default {
 
 .smart{
   @extend %item;
+
+  ::v-deep .date-wrapper{
+    margin: 0 16px;
+    .date-content{
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+  ::v-deep .tabs-wrapper {
+    li{
+      border: 1px solid #E5E5E5;
+      text-align: center;
+      border-radius: 25px;
+      //width: 33.33333%;
+    }
+  }
 }
 .account-center{
-  background-color: $color-shadow;
+  //background-color: $color-shadow;
 }
 
 .formItem {

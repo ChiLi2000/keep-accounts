@@ -1,41 +1,81 @@
 <template>
-  <Layout>
-    <div class="day">
-      <h3>每日支出</h3>
-      <div>折线统计图</div>
+  <div class="outer">
+    <div class="statistics-top">
+      <Date/>
+      <Tabs class-prefix="tabs">
+        <span class="additional">1000</span>
+      </Tabs>
     </div>
-    <div class="classify">
-      <h3>支出分类</h3>
-      <div>饼状图</div>
+    <div class="statistics-center">
+      <div class="day">
+        <h3>每日支出</h3>
+        <div>折线统计图</div>
+      </div>
+      <div class="classify">
+        <h3>支出分类</h3>
+        <div>饼状图</div>
+      </div>
+      <ol>
+        <p class="title">
+          10月支出排行
+        </p>
+        <Record/>
+        <Record/>
+        <Record/>
+        <Record/>
+        <Record/>
+        <Record/>
+        <Record/>
+      </ol>
     </div>
-    <ol>
-      <li>
-        <Record/>
-      </li>
-      <li>
-        <Record/>
-      </li>
-      <li>
-        <Record/>
-      </li>
-
-
-    </ol>
-
-  </Layout>
+    <Footer/>
+  </div>
 
 </template>
 
 <script lang="ts">
 export default {
-  name: 'Statistics'
+  name: "Statistics"
 };
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
-h3{
 
+.outer {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+
+  .statistics-top {
+    //height: 121px;
+    background-color: $color-shadow;
+  }
+
+  .statistics-center {
+    flex: 1;
+    width: 100%;
+    overflow: auto;
+  }
+}
+
+::v-deep .tabs-wrapper {
+  .selected{
+    border-bottom:2px solid gray;
+  }
+}
+.additional {
+  font-size: 28px;
+  font-weight: $font-height;
+}
+
+.title{
+  font-size: 14px;
+  background-color: #fbfbfb;
+  padding: $out-padding;
+}
+h3{
   line-height: 24px;
   background-color: #fbfbfb;
   padding: $out-padding;

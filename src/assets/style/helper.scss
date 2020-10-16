@@ -25,10 +25,11 @@ $font-height:600;
     inset 0 3px 3px -3px $color-shadow;
 }
 
-$out-margin:0 16px;
-$out-padding: 14px 16px;
+$out-margin:0 14px;
+$out-padding: 12px 14px;
 $color-shadow: #fff;
 $textLighterColor: #999;
+$padding-radio:4px 16px;
 
 %clearFix {
   &::after {

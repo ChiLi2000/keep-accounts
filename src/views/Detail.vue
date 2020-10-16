@@ -1,20 +1,50 @@
 <template>
-  <Layout class-prefix="layout">
-    <ol >
+  <div class="outer">
+    <div class="detail-top">
+      <Date/>
+      <Tabs class-prefix="tabs">
+        <span>1000</span>
+      </Tabs>
+    </div>
+    <div class="detail-center">
+    <ol>
       <li>
-        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
+        <h3 class="title">
+          10月16日<span class="type">支出：￥200 收入：￥1000 </span>
+        </h3>
+        <ol>
+          <Record/>
+          <Record/>
+          <Record/><Record/>
+
+        </ol>
       </li>
       <li>
-        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
+        <h3 class="title">
+          10月16日<span class="type">支出：￥200 收入：￥1000 </span>
+        </h3>
+        <ol>
+          <Record/>
+          <Record/>
+          <Record/><Record/>
+
+        </ol>
       </li>
       <li>
-        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
-      </li>
-      <li>
-        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
+        <h3 class="title">
+          10月16日<span class="type">支出：￥200 收入：￥1000 </span>
+        </h3>
+        <ol>
+          <Record/>
+          <Record/>
+          <Record/><Record/>
+
+        </ol>
       </li>
     </ol>
-  </Layout>
+    </div>
+    <Footer />
+  </div>
 
 </template>
 
@@ -26,9 +56,42 @@ export default {
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
-.type {
-  font-size: 14px;
+.outer{
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  .detail-top{
+    //height: 121px;
+    background-color: $color-shadow;
+  }
+  .detail-center{
+    flex: 1;
+    width: 100%;
+    overflow: auto;
+  }
 }
+.tabs-wrapper{
+  span{
+    font-size:28px;
+    font-weight: $font-height;
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  text-align: center;
+  line-height: 24px;
+  background-color: #fbfbfb;
+  padding: $out-padding;
+
+  .type {
+    font-size: 14px;
+  }
+}
+
 
 
 </style>

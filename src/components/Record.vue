@@ -1,34 +1,11 @@
 <template>
-  <div>
-    <h3 class="title">
-      10月14日
-      <slot/>
-    </h3>
-    <ol>
       <li class="record">
         <div class="left">
           <Icon name="detail" class="icon"/>
           <p>标签<span class="note">备注</span></p>
         </div>
-        <p><span>12:00</span>$100</p>
+        <p class="right"><span>12:00</span>$100</p>
       </li>
-      <li class="record">
-        <div class="left">
-          <Icon name="detail" class="icon"/>
-          <p>标签<span class="note">备注</span></p></div>
-        <p><span>12:00</span>$100</p>
-      </li>
-      <li class="record">
-        <div class="left">
-          <Icon name="detail" class="icon"/>
-          <p>标签<span class="note">备注</span></p></div>
-        <p><span>12:00</span>$100</p>
-      </li>
-    </ol>
-  </div>
-
-
-
 </template>
 
 <script lang="ts">
@@ -45,12 +22,6 @@ name: "Record"
   align-content: center;
   text-align: center;
 
-}
-.title {
-  @extend %item;
-  line-height: 24px;
-  background-color: #fbfbfb;
-  padding: $out-padding;
 }
 
 .record {
@@ -69,7 +40,11 @@ name: "Record"
       width: 32px;
       height: 32px;
     }
+  }
 
+  .right{
+    text-align: center;
+    padding:8px 0;
   }
 
   span {
