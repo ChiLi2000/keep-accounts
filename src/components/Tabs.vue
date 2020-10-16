@@ -25,8 +25,8 @@ name: "Tabs",
     padding: 4px 8px;
     margin: $out-margin;
   }
-  li.selected {
-    border-bottom:2px solid gray;
-  }
+  //li.selected {
+  //  border-bottom:2px solid gray;
+  //}
 }
 </style>

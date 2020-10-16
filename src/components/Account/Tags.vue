@@ -44,7 +44,7 @@ name: "Tags"
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
 .tag{
-  margin:$out-margin ;
+  margin:8px 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

@@ -14,6 +14,7 @@
     <div class="account-center">
       <Tags></Tags>
     </div>
+    <div class="account-bottom">
     <div class="formItem">
       <label>
         <input
@@ -23,7 +24,7 @@
       </label>
     </div>
     <NumberPad/>
-
+    </div>
   </div>
 
 
@@ -37,6 +38,22 @@ export default {
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
+.outer{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  .account-top{
+    height: 112px;
+  }
+  .account-bottom{
+    height: 356px;
+  }
+  .account-center{
+    flex: 1;
+    width: 100%;
+    overflow: auto;
+  }
+}
 
 %item {
   background-color: $color-shadow;
@@ -44,6 +61,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: $out-padding;
+
 }
 
 ::v-deep .navbar{

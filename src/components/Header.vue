@@ -1,14 +1,12 @@
 <template>
-  <div class="outer">
-    <div class="top" :class="classPrefix && `${classPrefix}-top`">
+  <div class="header">
+    <div class="top" >
       <Date class-prefix="date"/>
     </div>
-    <Tabs class-prefix="tabs">
+    <Tabs class-prefix="tabs" :class="classPrefix && `${classPrefix}-tabs`">
       <span>1000</span>
     </Tabs>
   </div>
-
-
 </template>
 
 <script lang="ts">
@@ -23,7 +21,7 @@ export default {
 
 @import "~@/assets/style/helper.scss";
 
-.outer {
+.header {
   background-color: $color-shadow;
   .top {
     display: flex;

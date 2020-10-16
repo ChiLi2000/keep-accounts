@@ -1,6 +1,15 @@
 <template>
-  <Layout>
+  <Layout class-prefix="layout">
     <ol >
+      <li>
+        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
+      </li>
+      <li>
+        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
+      </li>
+      <li>
+        <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
+      </li>
       <li>
         <Record><span class="type">支出：￥200 收入：￥1000 </span></Record>
       </li>
@@ -20,5 +29,6 @@ export default {
 .type {
   font-size: 14px;
 }
+
 
 </style>

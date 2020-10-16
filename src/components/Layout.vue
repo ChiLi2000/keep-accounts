@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-wrapper" >
+  <div class="outer" >
     <Header />
     <div class="content">
       <slot />
@@ -10,12 +10,13 @@
 
 <script lang="ts">
 export default {
-name: "Layout"
+name: "Layout",
+  props: ["classPrefix"],
 }
 </script>
 
 <style scoped lang="scss">
-.layout-wrapper{
+.outer{
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -25,7 +26,5 @@ name: "Layout"
     flex-grow: 1;
   }
 }
-
-
 
 </style>

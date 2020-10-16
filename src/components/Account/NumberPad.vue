@@ -41,7 +41,7 @@ export default {
 
   .buttons {
     @extend %clearFix;
-    margin:$out-padding;
+    margin:8px 16px;
     button {
       width: 25%;
       height: 56px;

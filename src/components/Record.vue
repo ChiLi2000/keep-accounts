@@ -8,7 +8,8 @@
       <li class="record">
         <div class="left">
           <Icon name="detail" class="icon"/>
-          <p>标签<span class="note">备注</span></p></div>
+          <p>标签<span class="note">备注</span></p>
+        </div>
         <p><span>12:00</span>$100</p>
       </li>
       <li class="record">
@@ -70,6 +71,7 @@ name: "Record"
     }
 
   }
+
   span {
     color: $textLighterColor;
     font-size: 12px;

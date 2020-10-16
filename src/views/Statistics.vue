@@ -12,6 +12,14 @@
       <li>
         <Record/>
       </li>
+      <li>
+        <Record/>
+      </li>
+      <li>
+        <Record/>
+      </li>
+
+
     </ol>
 
   </Layout>

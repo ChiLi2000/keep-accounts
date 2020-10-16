@@ -10,9 +10,12 @@
 @import "~@/assets/style/helper.scss";
 @import "~@/assets/style/reset.scss";
 
-body {
+body,html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
   font-size: 16px;
-  line-height: 1.5;
   font-family: $font-hei;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
