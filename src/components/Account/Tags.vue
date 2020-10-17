@@ -4,34 +4,8 @@
       记账</li>
     <li><Icon name="account"></Icon>
       记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
-    <li><Icon name="account"></Icon>
-      记账</li>
+
+
   </ul>
 </template>
 

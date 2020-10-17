@@ -7,7 +7,7 @@
         <span>.</span>
       </div>
       <div class="smart">
-        <Tabs class-prefix="tabs" class="tabs"/>
+        <Tabs :data-source="recordTypeList" :value.sync="type" class-prefix="tabs"/>
         <Date class-prefix="date"/>
       </div>
     </div>
@@ -15,40 +15,59 @@
       <Tags></Tags>
     </div>
     <div class="account-bottom">
-    <div class="formItem">
-      <label>
-        <input
-            type="text"
-            placeholder="请输入备注"
-        />
-      </label>
-    </div>
-    <NumberPad/>
+      <div class="formItem">
+        <label>
+          <input
+              type="text"
+              placeholder="请输入备注"
+          />
+        </label>
+      </div>
+      <NumberPad/>
     </div>
   </div>
-
-
 </template>
 
 <script lang="ts">
-export default {
-  name: 'account'
-};
+import Vue from "vue";
+import {Component,Watch} from "vue-property-decorator";
+import NumberPad from "@/components/Account/NumberPad.vue";
+import Tags from "@/components/Account/Tags.vue";
+import recordTypeList from "@/constants/recordTypeList";
+
+@Component({
+  components: {Tags, NumberPad}
+})
+export default class Account extends Vue {
+  recordTypeList = recordTypeList;
+  type = "-";
+
+
+@Watch('type')
+  onTag(){
+  console.log(this.type)
+}
+
+}
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
-.outer{
+
+.outer {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  .account-top{
+
+  .account-top {
     height: 112px;
   }
-  .account-bottom{
+
+  .account-bottom {
     height: 356px;
   }
-  .account-center{
+
+  .account-center {
     flex: 1;
     width: 100%;
     overflow: auto;
@@ -62,36 +81,49 @@ export default {
   align-items: center;
 }
 
-::v-deep .navbar{
+::v-deep .navbar {
   @extend %item;
   padding: $out-padding;
-  border-bottom:1px solid gray;
-  svg{
+  border-bottom: 1px solid gray;
+
+  svg {
     width: 24px;
     height: 24px;
   }
 }
 
-.smart{
+.smart {
   @extend %item;
 
-  ::v-deep .date-wrapper{
+  ::v-deep .date-wrapper {
     margin: 0 16px;
-    .date-content{
+
+    .date-content {
       font-size: 16px;
       font-weight: normal;
     }
   }
+
   ::v-deep .tabs-wrapper {
-    li{
+    li {
       border: 1px solid #E5E5E5;
       text-align: center;
       border-radius: 25px;
       //width: 33.33333%;
     }
   }
+
+  ::v-deep {
+    .tabs-item {
+      background: white;
+      &.selected {
+        background: #c4c4c4;
+      }
+    }
+  }
 }
-.account-center{
+
+.account-center {
   //background-color: $color-shadow;
 }
 
@@ -108,8 +140,6 @@ export default {
 
   }
 }
-
-
 
 
 </style>
