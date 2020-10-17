@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="account-center">
-      <Tags></Tags>
+      <Tags :contact.sync="type"></Tags>
     </div>
     <div class="account-bottom">
       <div class="formItem">
@@ -42,11 +42,6 @@ export default class Account extends Vue {
   recordTypeList = recordTypeList;
   type = "-";
 
-
-@Watch('type')
-  onTag(){
-  console.log(this.type)
-}
 
 }
 </script>

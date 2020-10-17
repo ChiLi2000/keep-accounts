@@ -1,5 +1,6 @@
 type RootState = {
-  tagList: Tag[];
+  disburseTagList: Tag[];
+  incomeTagList: Tag[];
   createTagError: Error | null;
 }
 
