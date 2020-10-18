@@ -8,7 +8,7 @@
       </div>
       <div class="smart">
         <Tabs :data-source="recordTypeList" :value.sync="type" class-prefix="tabs"/>
-        <Date  :value.sync= "time" :placeholder="placeholder" type="date" class-prefix="date"/>
+        <Date  :value.sync= "time" :placeholder="placeholder" type="date" format="MM-dd" class-prefix="date"/>
       </div>
     </div>
     <div class="account-center">

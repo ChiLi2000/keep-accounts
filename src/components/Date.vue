@@ -5,7 +5,7 @@
         v-model="dateValue"
         :type="type"
         :placeholder="placeholder"
-        format="MM-dd">
+        :format="format">
     </el-date-picker>
   </div>
 </template>
@@ -17,11 +17,11 @@ import {Component, Prop, Watch} from "vue-property-decorator";
 @Component
 export default class Date extends Vue {
   @Prop(String) classPrefix?: string;
-  @Prop() placeholder?: string;
-  @Prop() type!: string;
   @Prop() value!: string;
-
   dateValue = this.value;
+  @Prop() type!: string;
+  @Prop() placeholder?: string;
+  @Prop() format!: string;
 
 
 }

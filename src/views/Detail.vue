@@ -1,7 +1,7 @@
 <template>
   <div class="outer">
     <div class="detail-top">
-      <Date class-prefix="date"/>
+      <Date :value.sync= "time" :placeholder="placeholder" type="month" format="yyyy-MM"  class-prefix="date"/>
       <Tabs :data-source="recordTypeList"  class-prefix="tabs">
         <span>1000</span>
       </Tabs>
@@ -52,9 +52,12 @@
 import Vue from 'vue'
 import {Component} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
+import dayjs from "dayjs";
 @Component
 export default class Detail extends Vue{
   recordTypeList = recordTypeList;
+  time = new Date().toISOString()
+  placeholder = dayjs(new Date().toISOString()).format("YYYY-MM")
 }
 </script>
 
