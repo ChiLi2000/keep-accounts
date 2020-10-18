@@ -2,7 +2,7 @@
   <div class="outer">
     <div class="detail-top">
       <Date/>
-      <Tabs class-prefix="tabs">
+      <Tabs :data-source="recordTypeList"  class-prefix="tabs">
         <span>1000</span>
       </Tabs>
     </div>
@@ -49,9 +49,13 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Detail"
-};
+import Vue from 'vue'
+import {Component} from "vue-property-decorator";
+import recordTypeList from "@/constants/recordTypeList";
+@Component
+export default class Detail extends Vue{
+  recordTypeList = recordTypeList;
+}
 </script>
 
 <style scoped lang="scss">

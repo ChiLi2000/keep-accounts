@@ -2,7 +2,7 @@
   <div class="outer">
     <div class="statistics-top">
       <Date/>
-      <Tabs class-prefix="tabs">
+      <Tabs :data-source="recordTypeList" :value.sync="type" class-prefix="tabs">
         <span class="additional">1000</span>
       </Tabs>
     </div>
@@ -34,9 +34,14 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Statistics"
-};
+import Vue from 'vue'
+import {Component} from "vue-property-decorator";
+import recordTypeList from "@/constants/recordTypeList";
+@Component
+export default class Statistics extends Vue{
+  recordTypeList = recordTypeList;
+  type = "-";
+}
 </script>
 
 <style scoped lang="scss">

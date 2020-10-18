@@ -41,8 +41,6 @@ import recordTypeList from "@/constants/recordTypeList";
 export default class Account extends Vue {
   recordTypeList = recordTypeList;
   type = "-";
-
-
 }
 </script>
 
