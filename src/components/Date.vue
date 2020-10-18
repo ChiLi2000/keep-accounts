@@ -1,6 +1,5 @@
 <template>
   <div class="date-outer" :class="classPrefix && `${classPrefix}-wrapper`">
-    <span></span>
     <el-date-picker
         v-model="dateValue"
         :type="type"
@@ -32,16 +31,20 @@ export default class Date extends Vue {
 
 .date-outer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: $out-padding;
-  border:1px solid red;
+  //border:1px solid red;
+}
+::v-deep .el-date-editor.el-input{
+  width:100px;
+
+  input.el-input__inner {
+    padding:0 0 0 30px;
+    border-radius: 25px;
+
+  }
 }
 
-::v-deep input.el-input__inner {
-  width: 120px;
-  padding-right: 10px;
-  border-radius: 25px;
-}
 ::v-deep .el-icon-circle-close{
   visibility: hidden;
   transition: all 0s;

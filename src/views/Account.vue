@@ -92,7 +92,9 @@ export default class Account extends Vue {
   @extend %item;
 
   ::v-deep .date-wrapper {
-    width: 35%;
+    .el-date-editor.el-input {
+      width: 80px;
+    }
   }
 
   ::v-deep .tabs-wrapper {
