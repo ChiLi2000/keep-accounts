@@ -16,6 +16,7 @@ import Vue from "vue";
 import {Component, Prop, Watch} from "vue-property-decorator";
 
 const map: { [key: string]: string } = {
+  "tag name null": "标签名不能为空",
   "tag name duplicated": "标签名重复了"
 };
 
@@ -23,20 +24,19 @@ const map: { [key: string]: string } = {
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
 
-  @Watch('contact')
-  onTag(){
-    console.log(this.contact)
-    if(this.contact === '-'){
-      console.log("true")
-    }else{
-      console.log("false")
+  @Watch("contact")
+  onContact() {
+    if (this.contact === "-") {
+      this.$store.commit("fetchDisburseTags");
+    } else {
+      this.$store.commit("fetchIncomeTags");
     }
   }
 
   get tagList() {
-    if(this.contact === '-'){
+    if (this.contact === "-") {
       return this.$store.state.disburseTagList;
-    }else{
+    } else {
       return this.$store.state.incomeTagList;
     }
   }
@@ -48,10 +48,12 @@ export default class Tags extends Vue {
   createTag() {
     const value = window.prompt("请输入标签名");
     if (value !== null) {
-      if (!value) {
-        return window.alert("标签名不能为空");
+      if (this.contact === "-") {
+        this.$store.commit("createDisburseTag", {name: "left", value: value});
+      } else {
+        this.$store.commit("createIncomeTag", {name: "left", value: value});
       }
-      this.$store.commit("createTag", {name: "left", value: value});
+
       if (this.$store.state.createTagError) {
         window.alert(
             map[this.$store.state.createTagError.message] || "未知错误"
@@ -59,22 +61,42 @@ export default class Tags extends Vue {
       }
     }
   }
+
 // @click="remove(`${tag.id}`)"
   remove(id: string) {
-    this.$store.commit("removeTag", id);
+    if (this.contact === "-") {
+      this.$store.commit("removeDisburseTag", id);
+    } else {
+      this.$store.commit("removeIncomeTag", id);
+    }
   }
+
+  update(id: string, value: string) {
+    if (this.$store.state.createTagError) {
+      window.alert(
+          map[this.$store.state.createTagError.message] || "未知错误"
+      );
+    }
+    this.$store.commit("updateDisburseTag", {
+      id,
+      value,
+    });
+  }
+
+
 }
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
-.tags{
-  margin:8px 0;
+
+.tags {
+  margin: 8px 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  li{
+  li {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,7 +104,8 @@ export default class Tags extends Vue {
     font-size: 14px;
     padding: 6px 0;
     width: 25%;
-    ::v-deep svg{
+
+    ::v-deep svg {
       width: 32px;
       height: 32px;
     }
