@@ -34,6 +34,7 @@ export default class Date extends Vue {
   display: flex;
   justify-content: space-between;
   margin: $out-padding;
+  border:1px solid red;
 }
 
 ::v-deep input.el-input__inner {
@@ -41,5 +42,8 @@ export default class Date extends Vue {
   padding-right: 10px;
   border-radius: 25px;
 }
-
+::v-deep .el-icon-circle-close{
+  visibility: hidden;
+  transition: all 0s;
+}
 </style>
