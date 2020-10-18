@@ -8,7 +8,7 @@
       </div>
       <div class="smart">
         <Tabs :data-source="recordTypeList" :value.sync="type" class-prefix="tabs"/>
-        <Date class-prefix="date"/>
+        <Date  :value.sync= "time" :placeholder="placeholder" type="date" class-prefix="date"/>
       </div>
     </div>
     <div class="account-center">
@@ -34,6 +34,7 @@ import {Component,Watch} from "vue-property-decorator";
 import NumberPad from "@/components/Account/NumberPad.vue";
 import Tags from "@/components/Account/Tags.vue";
 import recordTypeList from "@/constants/recordTypeList";
+import dayjs from "dayjs";
 
 @Component({
   components: {Tags, NumberPad}
@@ -41,6 +42,8 @@ import recordTypeList from "@/constants/recordTypeList";
 export default class Account extends Vue {
   recordTypeList = recordTypeList;
   type = "-";
+  time = new Date().toISOString()
+  placeholder = dayjs(new Date().toISOString()).format("MM-DD")
 }
 </script>
 
@@ -89,20 +92,16 @@ export default class Account extends Vue {
   @extend %item;
 
   ::v-deep .date-wrapper {
-    margin: 0 16px;
-
-    .date-content {
-      font-size: 16px;
-      font-weight: normal;
-    }
+    width: 35%;
   }
 
   ::v-deep .tabs-wrapper {
+
     li {
-      border: 1px solid #E5E5E5;
+      border: 1px solid #DCDFE6;
       text-align: center;
       border-radius: 25px;
-      //width: 33.33333%;
+      color: #606266;
     }
   }
 

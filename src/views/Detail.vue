@@ -1,7 +1,7 @@
 <template>
   <div class="outer">
     <div class="detail-top">
-      <Date/>
+      <Date class-prefix="date"/>
       <Tabs :data-source="recordTypeList"  class-prefix="tabs">
         <span>1000</span>
       </Tabs>
@@ -95,7 +95,5 @@ export default class Detail extends Vue{
     font-size: 14px;
   }
 }
-
-
 
 </style>

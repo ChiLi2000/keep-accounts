@@ -1,17 +1,30 @@
 <template>
   <div class="date-outer" :class="classPrefix && `${classPrefix}-wrapper`">
-  <div class="date" :class="classPrefix && `${classPrefix}-content`">
-    2020年10月
-    <Icon name="down" class="down_icon"></Icon>
-  </div>
+    <span></span>
+    <el-date-picker
+        v-model="dateValue"
+        :type="type"
+        :placeholder="placeholder"
+        format="MM-dd">
+    </el-date-picker>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "date",
-  props: ["classPrefix"],
-};
+import Vue from "vue";
+import {Component, Prop, Watch} from "vue-property-decorator";
+
+@Component
+export default class Date extends Vue {
+  @Prop(String) classPrefix?: string;
+  @Prop() placeholder?: string;
+  @Prop() type!: string;
+  @Prop() value!: string;
+
+  dateValue = this.value;
+
+
+}
 </script>
 
 <style scoped lang="scss">
@@ -19,16 +32,14 @@ export default {
 
 .date-outer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  .date{
-    font-weight: $font-height;
-    margin: 12px 0;
-    font-size: 20px;
-    border: 1px solid #E5E5E5;
-    border-radius: 25px;
-    padding: $padding-radio;
-  }
+  justify-content: space-between;
+  margin: $out-padding;
+}
+
+::v-deep input.el-input__inner {
+  width: 120px;
+  padding-right: 10px;
+  border-radius: 25px;
 }
 
 </style>
