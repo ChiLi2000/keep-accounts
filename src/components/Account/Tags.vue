@@ -1,28 +1,35 @@
 <template>
   <ul class="tags">
-    <li v-for="tag in tagList" :key="tag.id" @click="remove(`${tag.id}`)">
+    <li v-for="tag in tagList" :key="tag.id" @click="showTest(`${tag.id}`,`${tag.value}`)">
       <Icon :name="`${tag.name}`"/>
       {{ tag.value }}
+      <!--      <AccDialog :dialog-visible.sync="showDialog" :value.sync="tag.value"></AccDialog>-->
     </li>
     <li @click="createTag">
       <Icon name="add"/>
       添加
     </li>
+    <AccDialog :dialog-visible.sync="showDialog" :value.sync="middleName" :id="middleId" ></AccDialog>
   </ul>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import {Component, Prop, Watch} from "vue-property-decorator";
+import AccDialog from "@/components/AccDialog.vue";
 
 const map: { [key: string]: string } = {
   "tag name null": "标签名不能为空",
   "tag name duplicated": "标签名重复了"
 };
-
-@Component
+@Component({
+  components: {AccDialog}
+})
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
+  showDialog = false;
+  middleName = "";
+  middleId = "";
 
   @Watch("contact")
   onContact() {
@@ -32,7 +39,11 @@ export default class Tags extends Vue {
       this.$store.commit("fetchIncomeTags");
     }
   }
-
+  showTest(id: string, value: string) {
+    this.middleId = id;
+    this.middleName = value;
+    this.showDialog = true;
+  }
   get tagList() {
     if (this.contact === "-") {
       return this.$store.state.disburseTagList;
@@ -40,11 +51,9 @@ export default class Tags extends Vue {
       return this.$store.state.incomeTagList;
     }
   }
-
   created() {
     this.$store.commit("fetchDisburseTags");
   }
-
   createTag() {
     const value = window.prompt("请输入标签名");
     if (value !== null) {
@@ -69,18 +78,6 @@ export default class Tags extends Vue {
     } else {
       this.$store.commit("removeIncomeTag", id);
     }
-  }
-
-  update(id: string, value: string) {
-    if (this.$store.state.createTagError) {
-      window.alert(
-          map[this.$store.state.createTagError.message] || "未知错误"
-      );
-    }
-    this.$store.commit("updateDisburseTag", {
-      id,
-      value,
-    });
   }
 
 
@@ -110,6 +107,18 @@ export default class Tags extends Vue {
       height: 32px;
     }
   }
+}
 
+::v-deep .el-dialog {
+  width: 60%;
+
+  .el-dialog__body {
+    padding: 15px 20px 0px 20px;
+  }
+}
+
+::v-deep .el-form-item__content {
+  margin-left: 10px !important;
+  //border:1px solid red;
 }
 </style>

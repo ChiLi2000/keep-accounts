@@ -115,6 +115,25 @@ const store = new Vuex.Store({
       store.commit("saveIncomeTags")
     },
 
+    updateIncomeTag(state,payload: {id: string; value: string}){
+      const {id,value} = payload;
+      state.createTagError = null;
+      const idList = state.incomeTagList.map((item => item.id))
+      if(idList.indexOf(id)>=0){
+        const values = state.incomeTagList.map(item=>item.value)
+        if(!value){
+          state.createTagError = new Error("tag name null");
+          return;
+        }else if(values.indexOf(value)>=0){
+          state.createTagError = new Error("tag name duplicated");
+          return;
+        }else{
+          const tag = state.incomeTagList.filter((item=>item.id === id))[0]
+          tag.value = value;
+          store.commit("saveIncomeTags")
+        }
+      }
+    },
 
   },
 });
