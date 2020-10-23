@@ -30,8 +30,7 @@ export default class AccDialog extends Vue {
     this.$emit("update:value", value);
   }
   cancel() {
-    this.$emit("update:dialogVisible", false);
-    console.log(this.value);
+      this.$emit("update:dialogVisible", false);
   }
 
   get tagList() {

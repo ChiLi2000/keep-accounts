@@ -1,7 +1,7 @@
 <template>
   <ul class="tags">
-    <li v-for="tag in tagList" :key="tag.id" @click="showTest(`${tag.id}`,`${tag.value}`)">
-      <Icon :name="`${tag.name}`"/>
+    <li v-for="tag in tagList" :key="tag.id" v-longpress="showTest(`${tag.id}`,`${tag.value}`)" @click="test">
+      <Icon :name="`${tag.name}`" />
       {{ tag.value }}
       <!--      <AccDialog :dialog-visible.sync="showDialog" :value.sync="tag.value"></AccDialog>-->
     </li>
@@ -17,13 +17,15 @@
 import Vue from "vue";
 import {Component, Prop, Watch} from "vue-property-decorator";
 import AccDialog from "@/components/AccDialog.vue";
+import longpress from '@/lib/longpress';
 
 const map: { [key: string]: string } = {
   "tag name null": "标签名不能为空",
   "tag name duplicated": "标签名重复了"
 };
 @Component({
-  components: {AccDialog}
+  components: {AccDialog},
+  directives: {longpress}
 })
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
@@ -39,11 +41,19 @@ export default class Tags extends Vue {
       this.$store.commit("fetchIncomeTags");
     }
   }
-  showTest(id: string, value: string) {
-    this.middleId = id;
-    this.middleName = value;
-    this.showDialog = true;
+  test(){
+    console.log("test")
   }
+
+  showTest(id: string, value: string) {
+    return ()=>{
+
+      this.middleId = id;
+      this.middleName = value;
+      this.showDialog = true;
+    }
+  }
+
   get tagList() {
     if (this.contact === "-") {
       return this.$store.state.disburseTagList;
@@ -79,8 +89,6 @@ export default class Tags extends Vue {
       this.$store.commit("removeIncomeTag", id);
     }
   }
-
-
 }
 </script>
 
@@ -120,5 +128,9 @@ export default class Tags extends Vue {
 ::v-deep .el-form-item__content {
   margin-left: 10px !important;
   //border:1px solid red;
+}
+
+.addClass{
+  color:red;
 }
 </style>
