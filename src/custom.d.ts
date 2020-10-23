@@ -1,6 +1,8 @@
 type RootState = {
   disburseTagList: Tag[];
   incomeTagList: Tag[];
+  recordList: RecordItem[];
+  createRecordError: Error | null;
   createTagError: Error | null;
 }
 
@@ -9,3 +11,13 @@ type Tag = {
   name: string;
   value: string;
 }
+
+type RecordItem = {
+  tag: Tag;
+  note: string;
+  type: string;
+  amount: number;
+  createAt?: string;
+}
+
+

@@ -7,12 +7,12 @@
         <span>.</span>
       </div>
       <div class="smart">
-        <Tabs :data-source="recordTypeList" :value.sync="type" class-prefix="tabs"/>
-        <Date  :value.sync= "time" :placeholder="placeholder" type="date" format="MM-dd" class-prefix="date"/>
+        <Tabs :data-source="recordTypeList" :value.sync="record.type" class-prefix="tabs"/>
+        <Date :value.sync="record.createAt" :placeholder="placeholder" type="date" format="MM-dd" class-prefix="date"/>
       </div>
     </div>
     <div class="account-center">
-      <Tags :contact.sync="type"></Tags>
+      <Tags :contact.sync="record.type" :value.sync="record.tag"></Tags>
     </div>
     <div class="account-bottom">
       <div class="formItem">
@@ -20,17 +20,18 @@
           <input
               type="text"
               placeholder="请输入备注"
+              v-model="record.note"
           />
         </label>
       </div>
-      <NumberPad/>
+      <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import {Component,Watch} from "vue-property-decorator";
+import {Component, Watch} from "vue-property-decorator";
 import NumberPad from "@/components/Account/NumberPad.vue";
 import Tags from "@/components/Account/Tags.vue";
 import recordTypeList from "@/constants/recordTypeList";
@@ -40,10 +41,29 @@ import dayjs from "dayjs";
   components: {Tags, NumberPad}
 })
 export default class Account extends Vue {
+  record: RecordItem = {
+    tag: {},
+    note: "",
+    type: "-",
+    amount: 0,
+    createAt: dayjs(new Date().toISOString()).format("YYYY-MM-DD")
+  };
+  // type = "-";
+  // time = new Date().toISOString();
+  placeholder = dayjs(new Date().toISOString()).format("MM-DD");
   recordTypeList = recordTypeList;
-  type = "-";
-  time = new Date().toISOString()
-  placeholder = dayjs(new Date().toISOString()).format("MM-DD")
+
+  created() {
+    this.$store.commit("fetchRecords");
+  }
+
+  saveRecord() {
+    this.$store.commit("createRecord", this.record);
+    if (this.$store.state.createRecordError === null) {
+      window.alert("已保存");
+      location.reload();
+    }
+  }
 }
 </script>
 
@@ -110,6 +130,7 @@ export default class Account extends Vue {
   ::v-deep {
     .tabs-item {
       background: white;
+
       &.selected {
         background: #c4c4c4;
       }

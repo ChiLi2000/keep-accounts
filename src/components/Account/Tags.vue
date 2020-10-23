@@ -1,7 +1,12 @@
 <template>
   <ul class="tags">
-    <li v-for="tag in tagList" :key="tag.id" v-longpress="showTest(`${tag.id}`,`${tag.value}`)" @click="test">
-      <Icon :name="`${tag.name}`" />
+    <li v-for="tag in tagList"
+        :key="tag.id"
+        v-longpress="showTest(`${tag.id}`,`${tag.value}`)"
+        @click="toggle(tag)"
+        :class="{selected:tag === selectedTag }"
+    >
+      <Icon :name="`${tag.name}`"/>
       {{ tag.value }}
       <!--      <AccDialog :dialog-visible.sync="showDialog" :value.sync="tag.value"></AccDialog>-->
     </li>
@@ -9,7 +14,7 @@
       <Icon name="add"/>
       添加
     </li>
-    <AccDialog :dialog-visible.sync="showDialog" :value.sync="middleName" :id="middleId" ></AccDialog>
+    <AccDialog :dialog-visible.sync="showDialog" :value.sync="middleName" :id="middleId"></AccDialog>
   </ul>
 </template>
 
@@ -17,7 +22,7 @@
 import Vue from "vue";
 import {Component, Prop, Watch} from "vue-property-decorator";
 import AccDialog from "@/components/AccDialog.vue";
-import longpress from '@/lib/longpress';
+import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
   "tag name null": "标签名不能为空",
@@ -29,6 +34,7 @@ const map: { [key: string]: string } = {
 })
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
+  selectedTag: Tag = {};
   showDialog = false;
   middleName = "";
   middleId = "";
@@ -41,29 +47,31 @@ export default class Tags extends Vue {
       this.$store.commit("fetchIncomeTags");
     }
   }
-  test(){
-    console.log("test")
+
+  test() {
+    console.log("test");
   }
 
   showTest(id: string, value: string) {
-    return ()=>{
-
+    return () => {
       this.middleId = id;
       this.middleName = value;
       this.showDialog = true;
-    }
+    };
   }
 
-  get tagList() {
+  get tagList(): Tag[] {
     if (this.contact === "-") {
       return this.$store.state.disburseTagList;
     } else {
       return this.$store.state.incomeTagList;
     }
   }
+
   created() {
     this.$store.commit("fetchDisburseTags");
   }
+
   createTag() {
     const value = window.prompt("请输入标签名");
     if (value !== null) {
@@ -89,6 +97,11 @@ export default class Tags extends Vue {
       this.$store.commit("removeIncomeTag", id);
     }
   }
+
+  toggle(tag: Tag) {
+    this.$emit("update:value", tag);
+    this.selectedTag = tag;
+  }
 }
 </script>
 
@@ -110,6 +123,10 @@ export default class Tags extends Vue {
     padding: 6px 0;
     width: 25%;
 
+    &.selected {
+      color: red;
+    }
+
     ::v-deep svg {
       width: 32px;
       height: 32px;
@@ -121,7 +138,7 @@ export default class Tags extends Vue {
   width: 60%;
 
   .el-dialog__body {
-    padding: 15px 20px 0px 20px;
+    padding: 15px 20px 0 20px;
   }
 }
 
@@ -130,7 +147,7 @@ export default class Tags extends Vue {
   //border:1px solid red;
 }
 
-.addClass{
-  color:red;
+.addClass {
+  color: red;
 }
 </style>

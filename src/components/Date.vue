@@ -4,14 +4,16 @@
         v-model="dateValue"
         :type="type"
         :placeholder="placeholder"
-        :format="format">
+        :format="format"
+        >
     </el-date-picker>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Prop} from "vue-property-decorator";
+import {Component, Prop, Watch} from "vue-property-decorator";
+import dayjs from "dayjs";
 
 @Component
 export default class Date extends Vue {
@@ -22,6 +24,11 @@ export default class Date extends Vue {
   @Prop() placeholder?: string;
   @Prop() format!: string;
 
+  @Watch("dateValue")
+  onValue() {
+    this.$emit("update:value",dayjs(this.dateValue).format("YYYY-MM-DD"));
+    console.log(this.dateValue)
+  }
 
 }
 </script>
