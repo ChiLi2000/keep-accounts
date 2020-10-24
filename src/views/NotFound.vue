@@ -5,8 +5,7 @@
   <!--    </div>-->
 
   <div>
-    <el-button type="text" v-longpress="incrementPlusTen" v-on:onmouseup="incrementPlusOne">点击打开 Dialog</el-button>
-
+    <el-button type="text"  @click="dialogFormVisible = true">点击打开 Dialog</el-button>
     <el-dialog title="请编辑类别名" :visible.sync="dialogFormVisible">
       <el-form>
         <el-form-item :label-width="formLabelWidth">
@@ -18,8 +17,6 @@
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
-
-    <button v-longpress="incrementPlusTen" @click="incrementPlusOne">{{value}}</button>
   </div>
 </template>
 
@@ -33,21 +30,10 @@ import longpress from '@/lib/longpress';
 
 @Component({
   components: {AccDialog},
-  directives: {
-    longpress
-  }
 })
 export default class NotFound extends Vue {
   formLabelWidth = "120px";
   dialogFormVisible = false;
-
-  incrementPlusOne() {
-    console.log('我是点击')
-  }
-  incrementPlusTen() {
-    this.dialogFormVisible = true
-  }
-
 }
 </script>
 

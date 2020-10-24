@@ -1,8 +1,10 @@
 <template>
-  <el-dialog :append-to-body="true" title="示例弹窗" :visible.sync="dialogVisible" :before-close="cancel">
+  <el-dialog :append-to-body="true" title="请编辑类别名" :visible.sync="dialogVisible" :before-close="cancel">
     <input :value="value"
-           @change="onValueChanged($event.target.value)"/>{{ value }}
+           @change="onValueChanged($event.target.value)"/>
+
     <div slot="footer" class="dialog-footer">
+      <el-button @click="remove(id)">删除</el-button>
       <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="update(id,value)">确 定</el-button>
     </div>
@@ -61,15 +63,41 @@ export default class AccDialog extends Vue {
       this.$emit("update:dialogVisible", false);
     }
   }
+
+  remove(id: string) {
+    if (this.type === "-") {
+      this.$store.commit("removeDisburseTag", id);
+    } else {
+      this.$store.commit("removeIncomeTag", id);
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
 ::v-deep .el-dialog {
-  width: 60%;
+  width: 80%;
 
   .el-dialog__body {
-    padding: 15px 20px 0px 20px;
+    padding: 15px 20px ;
+    margin-bottom:15px ;
+
+    input{
+    border-radius: 4px;
+      border:1px solid #DCDFE6;
+      height: 40px;
+      font-size: inherit;
+      padding: 0 15px 0 0;
+      outline: 0;
+      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    }
+  }
+  .el-dialog__footer{
+    display: flex;
+    .el-button{
+      justify-content: space-between;
+      padding: 8px 10px;
+    }
   }
 }
 

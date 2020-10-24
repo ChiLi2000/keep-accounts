@@ -34,7 +34,8 @@ const map: { [key: string]: string } = {
 })
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
-  selectedTag: Tag = {};
+  @Prop() value!: Tag;
+  selectedTag: Tag = this.value;
   showDialog = false;
   middleName = "";
   middleId = "";
@@ -89,14 +90,6 @@ export default class Tags extends Vue {
     }
   }
 
-// @click="remove(`${tag.id}`)"
-  remove(id: string) {
-    if (this.contact === "-") {
-      this.$store.commit("removeDisburseTag", id);
-    } else {
-      this.$store.commit("removeIncomeTag", id);
-    }
-  }
 
   toggle(tag: Tag) {
     this.$emit("update:value", tag);

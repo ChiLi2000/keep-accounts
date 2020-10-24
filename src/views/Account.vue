@@ -42,7 +42,7 @@ import dayjs from "dayjs";
 })
 export default class Account extends Vue {
   record: RecordItem = {
-    tag: {},
+    tag: {id: "2", name: "account", value: "记账"},
     note: "",
     type: "-",
     amount: 0,
