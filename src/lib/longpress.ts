@@ -1,7 +1,7 @@
 import {DirectiveOptions} from "vue";
 
 const directive: DirectiveOptions = {
-  bind: function (el, binding, vNode) {
+  update: function (el, binding, vNode) {
 
     // 确保提供的表达式是函数
     if (typeof binding.value !== "function") {
@@ -29,7 +29,7 @@ const directive: DirectiveOptions = {
         pressTimer = setTimeout(() => {
           // 执行函数
           handler(e);
-        }, 2000);
+        }, 1000);
       }
     };
 

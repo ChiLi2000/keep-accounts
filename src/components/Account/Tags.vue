@@ -8,38 +8,46 @@
     >
       <Icon :name="`${tag.name}`"/>
       {{ tag.value }}
-      <!--      <AccDialog :dialog-visible.sync="showDialog" :value.sync="tag.value"></AccDialog>-->
     </li>
     <li @click="createTag">
       <Icon name="add"/>
       添加
     </li>
-    <AccDialog :dialog-visible.sync="showDialog" :value.sync="middleName" :id="middleId"></AccDialog>
+    <el-dialog :append-to-body="true" title="请编辑类别名" :visible.sync="showDialog" :before-close="cancel" >
+      <el-form >
+        <el-form-item >
+          <el-input v-model="middleName" @input="overLength"></el-input>
+          <p class="msg">{{ middleName.length }} / 4</p>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="remove()">删除</el-button>
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="update()">确 定</el-button>
+      </div>
+    </el-dialog>
   </ul>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import {Component, Prop, Watch} from "vue-property-decorator";
-import AccDialog from "@/components/AccDialog.vue";
 import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
   "tag name null": "标签名不能为空",
   "tag name duplicated": "标签名重复了"
+
 };
 @Component({
-  components: {AccDialog},
   directives: {longpress}
 })
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
-  @Prop() value!: Tag;
-  selectedTag: Tag = this.value;
+  selectedTag: Tag = {id: "2", name: "account", value: "记账"};
   showDialog = false;
   middleName = "";
   middleId = "";
-
   @Watch("contact")
   onContact() {
     if (this.contact === "-") {
@@ -47,10 +55,6 @@ export default class Tags extends Vue {
     } else {
       this.$store.commit("fetchIncomeTags");
     }
-  }
-
-  test() {
-    console.log("test");
   }
 
   showTest(id: string, value: string) {
@@ -61,6 +65,42 @@ export default class Tags extends Vue {
     };
   }
 
+  cancel() {
+    this.showDialog = false;
+  }
+  overLength(){
+    this.middleName = this.middleName.substring(0, 4);
+    this.$emit("change", this.middleName);
+  }
+  update() {
+    if(this.contact ==='-'){
+      this.$store.commit("updateDisburseTag", {
+        id:this.middleId,
+        value:this.middleName,
+      });
+    }else{
+      this.$store.commit("updateIncomeTag", {
+        id:this.middleId,
+        value:this.middleName,
+      });
+    }
+    if (this.$store.state.createTagError) {
+      window.alert(
+          map[this.$store.state.createTagError.message] || "未知错误"
+      );
+    }else{
+      this.cancel();
+    }
+  }
+  remove() {
+    if (this.contact === "-") {
+      this.$store.commit("removeDisburseTag", this.middleId);
+    } else {
+      this.$store.commit("removeIncomeTag", this.middleId);
+    }
+    window.alert("删除成功")
+    this.cancel()
+  }
   get tagList(): Tag[] {
     if (this.contact === "-") {
       return this.$store.state.disburseTagList;
@@ -89,7 +129,6 @@ export default class Tags extends Vue {
       }
     }
   }
-
 
   toggle(tag: Tag) {
     this.$emit("update:value", tag);
@@ -128,18 +167,34 @@ export default class Tags extends Vue {
 }
 
 ::v-deep .el-dialog {
-  width: 60%;
+  width: 80%;
 
   .el-dialog__body {
     padding: 15px 20px 0 20px;
   }
+  .el-dialog__footer{
+    padding: 0 20px 20px 20px;
+    .dialog__footer{
+
+      display: flex;
+      .el-button{
+        justify-content: space-between;
+        padding: 10px 14px;
+      }
+    }
+  }
+
 }
 
 ::v-deep .el-form-item__content {
   margin-left: 10px !important;
-  //border:1px solid red;
-}
 
+}
+.msg {
+  text-align: right;
+  font-size: 12px;
+  color: #999999;
+}
 .addClass {
   color: red;
 }

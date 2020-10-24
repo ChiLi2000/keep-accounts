@@ -27,9 +27,7 @@ export default class Date extends Vue {
   @Watch("dateValue")
   onValue() {
     this.$emit("update:value",dayjs(this.dateValue).format("YYYY-MM-DD"));
-    console.log(this.dateValue)
   }
-
 }
 </script>
 
@@ -40,7 +38,6 @@ export default class Date extends Vue {
   display: flex;
   justify-content: center;
   margin: $out-padding;
-  //border:1px solid red;
 }
 ::v-deep .el-date-editor.el-input{
   width:100px;
@@ -48,7 +45,6 @@ export default class Date extends Vue {
   input.el-input__inner {
     padding:0 0 0 30px;
     border-radius: 25px;
-
   }
 }
 
