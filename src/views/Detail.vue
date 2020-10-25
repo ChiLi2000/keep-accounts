@@ -2,8 +2,8 @@
   <div class="outer">
     <div class="detail-top">
       <Date :value.sync="time" :placeholder="placeholder" type="month" format="yyyy-MM" class-prefix="date"/>
-      <Tabs :data-source="recordTypeList" class-prefix="tabs">
-        <span>1000</span>
+      <Tabs :data-source="recordTypeList" class-prefix="tabs" v-if="groupedList.length>0">
+        <span>{{this.mouthList.disburseTotal}}</span>
       </Tabs>
     </div>
     <div class="detail-center">
@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component} from "vue-property-decorator";
+import {Component,Watch} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
@@ -35,9 +35,21 @@ export default class Detail extends Vue {
   recordTypeList = recordTypeList;
   time = new Date().toISOString();
   placeholder = dayjs(new Date().toISOString()).format("YYYY-MM");
-
+  mouthList=this.mouthGroupedList[0]
+@Watch("time")
+onMouth(){
+this.mouthList=this.mouthGroupedList.filter(r=>r.title===dayjs(this.time).format("YYYY-MM"))[0]
+  console.log(this.mouthList)
+}
   created() {
     this.$store.commit("fetchRecords");
+    this.mouthList=this.mouthGroupedList.filter(r=>r.title===dayjs(this.time).format("YYYY-MM"))[0]
+
+    // console.log(this.mouthList)
+    // for(let i=0;i<this.mouthGroupedList.length;i++){
+    //   console.log(this.mouthGroupedList[i].title)
+    //   console.log(this.mouthGroupedList[i].items)
+    // }
   }
 
   get recordList() {
@@ -86,7 +98,44 @@ export default class Detail extends Vue {
   formatTitle(string: string) {
     return dayjs(string).format("M月D日");
   }
+  get mouthGroupedList() {
+    const {recordList} = this;
+    const newList = clone(recordList)
+        .sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
+    if (newList.length === 0) {
+      return [];
+    }
+    const result: Result = [
+      {
+        title: dayjs(newList[0].createAt).format("YYYY-MM"),
+        items: [newList[0]]
+      }
+    ];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = result[result.length - 1];
+      if (dayjs(last.title).isSame(dayjs(current.createAt), "month")) {
+        last.items.push(current);
+      } else {
+        result.push({
+          title: dayjs(current.createAt).format("YYYY-MM"),
+          items: [current]
+        });
+      }
+    }
 
+    result.map((group) => {
+      group.disburseTotal = group.items.filter(r => r.type === "-").reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    });
+    result.map((group) => {
+      group.incomeTotal = group.items.filter(r => r.type === "+").reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    });
+    return result;
+  }
 
 
 

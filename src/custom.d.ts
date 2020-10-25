@@ -27,3 +27,10 @@ type Result = {
   items: RecordItem[];
 }[]
 
+type mouthResult = {
+  title: string;
+  disburseTotal?: number;
+  incomeTotal?: number;
+  items: Result;
+}[]
+
