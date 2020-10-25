@@ -17,7 +17,13 @@ type RecordItem = {
   note: string;
   type: string;
   amount: number;
-  createAt?: string;
+  createAt: string;
 }
 
+type Result = {
+  title: string;
+  disburseTotal?: number;
+  incomeTotal?: number;
+  items: RecordItem[];
+}[]
 

@@ -4,7 +4,7 @@
         :key="tag.id"
         v-longpress="showTest(`${tag.id}`,`${tag.value}`)"
         @click="toggle(tag)"
-        :class="{selected:tag === selectedTag }"
+        :class="{selected:tag === selectedTagAdd }"
     >
       <Icon :name="`${tag.name}`"/>
       {{ tag.value }}
@@ -13,9 +13,9 @@
       <Icon name="add"/>
       添加
     </li>
-    <el-dialog :append-to-body="true" title="请编辑类别名" :visible.sync="showDialog" :before-close="cancel" >
-      <el-form >
-        <el-form-item >
+    <el-dialog :append-to-body="true" title="请编辑类别名" :visible.sync="showDialog" :before-close="cancel">
+      <el-form>
+        <el-form-item>
           <el-input v-model="middleName" @input="overLength"></el-input>
           <p class="msg">{{ middleName.length }} / 4</p>
         </el-form-item>
@@ -44,19 +44,18 @@ const map: { [key: string]: string } = {
 })
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
-  selectedTag: Tag = {id: "2", name: "account", value: "记账"};
+
+  @Prop() selectTag!: Tag;
+  selectedTagAdd: Tag = this.selectTag;
   showDialog = false;
   middleName = "";
   middleId = "";
-  @Watch("contact")
-  onContact() {
-    if (this.contact === "-") {
-      this.$store.commit("fetchDisburseTags");
-    } else {
-      this.$store.commit("fetchIncomeTags");
-    }
-  }
 
+
+  created() {
+    this.$store.commit("fetchDisburseTags");
+    this.$store.commit("fetchIncomeTags");
+  }
   showTest(id: string, value: string) {
     return () => {
       this.middleId = id;
@@ -68,39 +67,43 @@ export default class Tags extends Vue {
   cancel() {
     this.showDialog = false;
   }
-  overLength(){
+
+  overLength() {
     this.middleName = this.middleName.substring(0, 4);
     this.$emit("change", this.middleName);
   }
+
   update() {
-    if(this.contact ==='-'){
+    if (this.contact === "-") {
       this.$store.commit("updateDisburseTag", {
-        id:this.middleId,
-        value:this.middleName,
+        id: this.middleId,
+        value: this.middleName,
       });
-    }else{
+    } else {
       this.$store.commit("updateIncomeTag", {
-        id:this.middleId,
-        value:this.middleName,
+        id: this.middleId,
+        value: this.middleName,
       });
     }
     if (this.$store.state.createTagError) {
       window.alert(
           map[this.$store.state.createTagError.message] || "未知错误"
       );
-    }else{
+    } else {
       this.cancel();
     }
   }
+
   remove() {
     if (this.contact === "-") {
       this.$store.commit("removeDisburseTag", this.middleId);
     } else {
       this.$store.commit("removeIncomeTag", this.middleId);
     }
-    window.alert("删除成功")
-    this.cancel()
+    window.alert("删除成功");
+    this.cancel();
   }
+
   get tagList(): Tag[] {
     if (this.contact === "-") {
       return this.$store.state.disburseTagList;
@@ -109,9 +112,7 @@ export default class Tags extends Vue {
     }
   }
 
-  created() {
-    this.$store.commit("fetchDisburseTags");
-  }
+
 
   createTag() {
     const value = window.prompt("请输入标签名");
@@ -131,8 +132,8 @@ export default class Tags extends Vue {
   }
 
   toggle(tag: Tag) {
-    this.$emit("update:value", tag);
-    this.selectedTag = tag;
+    this.$emit("update:selectTag", tag);
+    this.selectedTagAdd = tag
   }
 }
 </script>
@@ -172,12 +173,15 @@ export default class Tags extends Vue {
   .el-dialog__body {
     padding: 15px 20px 0 20px;
   }
-  .el-dialog__footer{
+
+  .el-dialog__footer {
     padding: 0 20px 20px 20px;
-    .dialog__footer{
+
+    .dialog__footer {
 
       display: flex;
-      .el-button{
+
+      .el-button {
         justify-content: space-between;
         padding: 10px 14px;
       }
@@ -190,11 +194,13 @@ export default class Tags extends Vue {
   margin-left: 10px !important;
 
 }
+
 .msg {
   text-align: right;
   font-size: 12px;
   color: #999999;
 }
+
 .addClass {
   color: red;
 }

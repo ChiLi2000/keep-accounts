@@ -1,21 +1,28 @@
 <template>
-      <li class="record">
-        <div class="left">
-          <Icon name="detail" class="icon"/>
-          <p>标签<span class="note">备注</span></p>
-        </div>
-        <p class="right"><span>12:00</span>$100</p>
-      </li>
+  <div>
+  <li class="record" v-for="item in items" :key="item.id">
+    <div class="left">
+      <Icon :name="`${item.tag.name}`" class="icon"/>
+      <p>{{ item.tag.value }}<span class="note">{{ item.note }}</span></p>
+    </div>
+    <p class="right">${{ item.amount }}</p>
+  </li>
+  </div>
 </template>
 
 <script lang="ts">
-export default {
-name: "Record"
+import Vue from "vue";
+import {Component, Prop} from "vue-property-decorator";
+
+@Component
+export default class Record extends Vue {
+  @Prop() items!: RecordItem;
 }
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
+
 %item {
   display: flex;
   justify-content: space-between;
@@ -32,6 +39,7 @@ name: "Record"
   .left {
     @extend %item;
     line-height: 32px;
+
     .icon {
       margin-right: 10px;
     }
@@ -42,9 +50,9 @@ name: "Record"
     }
   }
 
-  .right{
+  .right {
     text-align: center;
-    padding:8px 0;
+    padding: 8px 0;
   }
 
   span {

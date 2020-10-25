@@ -2,7 +2,7 @@
   <div class="outer">
     <div class="account-top">
       <div class="navbar">
-        <Icon class="leftIcon" name="left"/>
+        <Icon class="leftIcon" name="left" @click.native="goBack"/>
         <span class="title">记账</span>
         <span>.</span>
       </div>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="account-center">
-      <Tags :contact.sync="record.type" :value.sync="record.tag"></Tags>
+      <Tags :contact.sync="record.type" :selectTag.sync="record.tag"></Tags>
     </div>
     <div class="account-bottom">
       <div class="formItem">
@@ -42,7 +42,7 @@ import dayjs from "dayjs";
 })
 export default class Account extends Vue {
   record: RecordItem = {
-    tag: {id: "2", name: "account", value: "记账"},
+    tag: {id: "0", name: "money", value: "其它"},
     note: "",
     type: "-",
     amount: 0,
@@ -63,6 +63,10 @@ export default class Account extends Vue {
       window.alert("已保存");
       location.reload();
     }
+  }
+
+  goBack(){
+    this.$router.back()
   }
 }
 </script>
@@ -87,6 +91,7 @@ export default class Account extends Vue {
     flex: 1;
     width: 100%;
     overflow: auto;
+    background-color: #ffffff;
   }
 }
 
