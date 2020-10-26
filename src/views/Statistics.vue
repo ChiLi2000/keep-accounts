@@ -17,15 +17,12 @@
       </div>
       <ol>
         <p class="title">
-          10月支出排行
+          {{ formatTitle(finallyList.title) }}支出排行
         </p>
-        <Record/>
-        <Record/>
-        <Record/>
-        <Record/>
-        <Record/>
-        <Record/>
-        <Record/>
+        <Record :items="finallyList.items" v-if="check(finallyList)"/>
+        <div v-else class="noResult">
+          无
+        </div>
       </ol>
     </div>
     <Footer/>
@@ -38,18 +35,94 @@ import Vue from 'vue'
 import {Component} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
+import clone from "@/lib/clone";
 @Component
 export default class Statistics extends Vue{
   recordTypeList = recordTypeList;
   type = "-";
   time = new Date().toISOString()
   placeholder = dayjs(new Date().toISOString()).format("YYYY-MM")
+
+  created() {
+    this.$store.commit("fetchRecords");
+    console.log(this.finallyList)
+  }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
+
+  get groupedList() {
+    const {recordList} = this;
+    const newList = clone(recordList)
+        .filter((r) => r.type === this.type)
+        .sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
+    if (newList.length === 0) {
+      return [];
+    }
+    const result: Result = [
+      {
+        title: dayjs(newList[0].createAt).format("YYYY-MM"),
+        items: [newList[0]]
+      }
+    ];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = result[result.length - 1];
+      if (dayjs(last.title).isSame(dayjs(current.createAt), "month")) {
+        last.items.push(current);
+      } else {
+        result.push({
+          title: dayjs(current.createAt).format("YYYY-MM"),
+          items: [current]
+        });
+      }
+    }
+    result.map((group) => {
+      group.disburseTotal = group.items.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    });
+    result.map((group) => {
+      group.incomeTotal = group.items.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    });
+    return result;
+  }
+  get finallyList() {
+    let mouthList = this.groupedList[0];
+    for (let i = 0; i < this.groupedList.length; i++) {
+      if (this.groupedList[i].title === dayjs(this.time).format("YYYY-MM")) {
+        mouthList = this.groupedList[i];
+      }
+    }
+    return mouthList;
+  }
+  check(finallyList: {
+    title: string;
+    disburseTotal?: number;
+    incomeTotal?: number;
+    items: Result;
+  }) {
+    if (this.finallyList.title === dayjs(this.time).format("YYYY-MM")) {
+      return true;
+    }
+    return false;
+  }
+  formatTitle(string: string) {
+    return dayjs(string).format("M月");
+  }
+
 }
+
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
-
+.noResult {
+  padding: 16px;
+  text-align: center;
+}
 .outer {
   display: flex;
   flex-direction: column;
