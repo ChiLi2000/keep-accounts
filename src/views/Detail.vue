@@ -2,9 +2,16 @@
   <div class="outer">
     <div class="detail-top">
       <Date :value.sync="time" :placeholder="placeholder" type="month" format="yyyy-MM" class-prefix="date"/>
-      <Tabs :data-source="recordTypeList" class-prefix="tabs">
-        <span v-if="check(finallyList)">{{finallyList.disburseTotal}}</span><span v-else class="noResult">0</span>
-      </Tabs>
+      <ul class="tabs" >
+        <li>
+          支出
+          <span v-if="check(finallyList)">{{finallyList.disburseTotal}}</span><span v-else class="noResult">0</span>
+        </li>
+        <li>
+         收入
+          <span v-if="check(finallyList)">{{finallyList.incomeTotal}}</span><span v-else class="noResult">0</span>
+        </li>
+      </ul>
     </div>
     <div class="detail-center">
       <ol v-if="check(finallyList)">
@@ -30,14 +37,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Watch} from "vue-property-decorator";
-import recordTypeList from "@/constants/recordTypeList";
+import {Component} from "vue-property-decorator";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 
 @Component
 export default class Detail extends Vue {
-  recordTypeList = recordTypeList;
   time = new Date().toISOString();
   placeholder = dayjs(new Date().toISOString()).format("YYYY-MM");
 
@@ -188,7 +193,18 @@ export default class Detail extends Vue {
   }
 }
 
-.tabs-wrapper {
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+
+  li {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: $padding-radio;
+    margin: $out-margin;
+  }
   span {
     font-size: 28px;
     font-weight: $font-height;

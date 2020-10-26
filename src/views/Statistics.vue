@@ -1,9 +1,8 @@
 <template>
   <div class="outer">
     <div class="statistics-top">
-      <Date :value.sync= "time" :placeholder="placeholder" type="month" format="yyyy-MM"  class-prefix="date"/>
+      <Date :value.sync="time" :placeholder="placeholder" type="month" format="yyyy-MM" class-prefix="date"/>
       <Tabs :data-source="recordTypeList" :value.sync="type" class-prefix="tabs">
-        <span class="additional">1000</span>
       </Tabs>
     </div>
     <div class="statistics-center">
@@ -15,15 +14,16 @@
         <h3>支出分类</h3>
         <div>饼状图</div>
       </div>
-      <ol>
-        <p class="title">
-          {{ formatTitle(finallyList.title) }}支出排行
-        </p>
+      <ol v-if="check(finallyList)">
+        <h3 class="title">
+          {{ formatTitle(finallyList.title) }}{{type}}排行<span class="type">${{finallyList.disburseTotal}}</span>
+        </h3>
         <Record :items="finallyList.items" v-if="check(finallyList)"/>
-        <div v-else class="noResult">
-          无
-        </div>
+
       </ol>
+      <div class="noResult" v-else>
+        无
+      </div>
     </div>
     <Footer/>
   </div>
@@ -31,22 +31,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 import {Component} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
+
 @Component
-export default class Statistics extends Vue{
+export default class Statistics extends Vue {
   recordTypeList = recordTypeList;
   type = "-";
-  time = new Date().toISOString()
-  placeholder = dayjs(new Date().toISOString()).format("YYYY-MM")
+  time = new Date().toISOString();
+  placeholder = dayjs(new Date().toISOString()).format("YYYY-MM");
 
   created() {
     this.$store.commit("fetchRecords");
-    console.log(this.finallyList)
+    console.log(this.finallyList);
   }
+
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -82,33 +84,40 @@ export default class Statistics extends Vue{
         return sum + item.amount;
       }, 0);
     });
-    result.map((group) => {
-      group.incomeTotal = group.items.reduce((sum, item) => {
-        return sum + item.amount;
-      }, 0);
-    });
     return result;
   }
+
   get finallyList() {
+    if (this.groupedList === undefined) {
+      return undefined;
+    }
     let mouthList = this.groupedList[0];
     for (let i = 0; i < this.groupedList.length; i++) {
       if (this.groupedList[i].title === dayjs(this.time).format("YYYY-MM")) {
         mouthList = this.groupedList[i];
+        mouthList.items.sort(function(a,b){
+          return b.amount-a.amount
+        });
       }
     }
     return mouthList;
   }
+
+
   check(finallyList: {
     title: string;
     disburseTotal?: number;
     incomeTotal?: number;
     items: Result;
   }) {
-    if (this.finallyList.title === dayjs(this.time).format("YYYY-MM")) {
-      return true;
+    if (this.finallyList !== undefined) {
+      if (this.finallyList.title === dayjs(this.time).format("YYYY-MM")) {
+        return true;
+      }
     }
     return false;
   }
+
   formatTitle(string: string) {
     return dayjs(string).format("M月");
   }
@@ -119,10 +128,12 @@ export default class Statistics extends Vue{
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
+
 .noResult {
   padding: 16px;
   text-align: center;
 }
+
 .outer {
   display: flex;
   flex-direction: column;
@@ -142,21 +153,31 @@ export default class Statistics extends Vue{
 }
 
 ::v-deep .tabs-wrapper {
-  .selected{
-    border-bottom:2px solid gray;
+  .selected {
+    border-bottom: 2px solid gray;
   }
 }
+
 .additional {
   font-size: 28px;
   font-weight: $font-height;
 }
 
-.title{
-  font-size: 14px;
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  text-align: center;
+  line-height: 24px;
   background-color: #fbfbfb;
   padding: $out-padding;
+
+  .type {
+    font-size: 14px;
+  }
 }
-h3{
+
+h3 {
   line-height: 24px;
   background-color: #fbfbfb;
   padding: $out-padding;
