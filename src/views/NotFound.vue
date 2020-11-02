@@ -5,6 +5,7 @@
   <!--    </div>-->
 
   <div>
+    <myLine/>
     <el-button type="text"  @click="dialogFormVisible = true">点击打开 Dialog</el-button>
     <el-dialog title="请编辑类别名" :visible.sync="dialogFormVisible">
       <el-form>
@@ -17,6 +18,7 @@
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -26,10 +28,11 @@ import AccDialog from "@/components/AccDialog.vue";
 import {Component} from "vue-property-decorator";
 
 import longpress from '@/lib/longpress';
+import myLine from "@/components/myLine.vue";
 
 
 @Component({
-  components: {AccDialog},
+  components: {myLine, AccDialog},
 })
 export default class NotFound extends Vue {
   formLabelWidth = "120px";

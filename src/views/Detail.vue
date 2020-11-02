@@ -48,6 +48,7 @@ export default class Detail extends Vue {
 
   created() {
     this.$store.commit("fetchRecords");
+    console.log(this.finallyList)
   }
 
   check(finallyList: {

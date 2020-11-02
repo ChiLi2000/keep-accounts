@@ -7,8 +7,10 @@
     </div>
     <div class="statistics-center">
       <div class="day">
-        <h3>每日支出</h3>
-        <div>折线统计图</div>
+        <my-line :data-line="lineList" v-if="check(lineList)"/>
+        <div class="noResult" v-else>
+          无
+        </div>
       </div>
       <div class="classify">
         <h3>支出分类</h3>
@@ -16,10 +18,9 @@
       </div>
       <ol v-if="check(finallyList)">
         <h3 class="title">
-          {{ formatTitle(finallyList.title) }}{{type}}排行<span class="type">${{finallyList.disburseTotal}}</span>
+          {{ formatTitle(finallyList.title) }}排行榜<span class="type">${{ finallyList.disburseTotal }}</span>
         </h3>
         <Record :items="finallyList.items" v-if="check(finallyList)"/>
-
       </ol>
       <div class="noResult" v-else>
         无
@@ -32,12 +33,15 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component} from "vue-property-decorator";
+import {Component, Watch} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
+import MyLine from "@/components/myLine.vue";
 
-@Component
+@Component({
+  components: {MyLine}
+})
 export default class Statistics extends Vue {
   recordTypeList = recordTypeList;
   type = "-";
@@ -46,9 +50,11 @@ export default class Statistics extends Vue {
 
   created() {
     this.$store.commit("fetchRecords");
-    console.log(this.finallyList);
   }
-
+@Watch("finallyList")
+onTest(){
+    console.log(this.finallyList)
+}
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -88,29 +94,29 @@ export default class Statistics extends Vue {
   }
 
   get finallyList() {
+    //1年的记录
     if (this.groupedList === undefined) {
       return undefined;
     }
+    //将没有数据的月份统一设计成当前月的数据
     let mouthList = this.groupedList[0];
     for (let i = 0; i < this.groupedList.length; i++) {
+      //某个月的记录
       if (this.groupedList[i].title === dayjs(this.time).format("YYYY-MM")) {
         mouthList = this.groupedList[i];
-        mouthList.items.sort(function(a,b){
-          return b.amount-a.amount
+        mouthList.items.sort(function (a, b) {
+          return b.amount - a.amount;
         });
       }
     }
+
     return mouthList;
   }
 
 
-  check(finallyList: {
-    title: string;
-    disburseTotal?: number;
-    incomeTotal?: number;
-    items: Result;
-  }) {
+  check(finallyList: testResult) {
     if (this.finallyList !== undefined) {
+      //判断月份不对直接 false1,其实一直是有数据但数据错误
       if (this.finallyList.title === dayjs(this.time).format("YYYY-MM")) {
         return true;
       }
@@ -120,6 +126,23 @@ export default class Statistics extends Vue {
 
   formatTitle(string: string) {
     return dayjs(string).format("M月");
+  }
+
+  get lineList() {
+    const {finallyList} = this;
+    const list = clone(finallyList);
+    if (list !== undefined) {
+      const items = list.items;
+      for (let i = 0; i < items.length - 1; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          if (items[i].createAt === items[j].createAt) {
+            items[i].amount += items[j].amount;
+            items.splice(j, 1);
+          }
+        }
+      }
+    }
+    return list;
   }
 
 }

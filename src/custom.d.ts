@@ -34,3 +34,10 @@ type mouthResult = {
   items: Result;
 }[]
 
+type testResult={
+  title: string;
+  disburseTotal?: number;
+  incomeTotal?: number;
+  items: RecordItem[];
+}
+

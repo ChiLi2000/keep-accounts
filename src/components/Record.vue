@@ -2,10 +2,10 @@
   <div>
   <li class="record" v-for="item in items" :key="item.id">
     <div class="left">
-      <Icon :name="`${item.tag.name}`" class="icon"/>
+      <Icon :name="`￥{item.tag.name}`" class="icon"/>
       <p>{{ item.tag.value }}<span class="note">{{ item.note }}</span></p>
     </div>
-    <p class="right">${{ item.amount }}</p>
+    <p class="right">￥{{ item.amount }}</p>
   </li>
   </div>
 </template>
