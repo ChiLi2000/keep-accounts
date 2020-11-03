@@ -42,7 +42,7 @@ import dayjs from "dayjs";
 })
 export default class Account extends Vue {
   record: RecordItem = {
-    tag: {id: "0", name: "money", value: "其它"},
+    tag: {id: "0", name: "其它", value: "其它"},
     note: "",
     type: "-",
     amount: 0,
@@ -108,14 +108,13 @@ export default class Account extends Vue {
   border-bottom: 1px solid gray;
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
   }
 }
 
 .smart {
   @extend %item;
-
   ::v-deep .date-wrapper {
     .el-date-editor.el-input {
       width: 80px;
@@ -128,7 +127,8 @@ export default class Account extends Vue {
       border: 1px solid #DCDFE6;
       text-align: center;
       border-radius: 25px;
-      color: #606266;
+      background: #f2f2f2;
+
     }
   }
 
@@ -137,7 +137,8 @@ export default class Account extends Vue {
       background: white;
 
       &.selected {
-        background: #c4c4c4;
+        border: 1px solid $color-label;
+        color: $color-label;
       }
     }
   }
@@ -160,6 +161,8 @@ export default class Account extends Vue {
 
   }
 }
+
+
 
 
 </style>

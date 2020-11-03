@@ -118,9 +118,9 @@ export default class Tags extends Vue {
     const value = window.prompt("请输入标签名");
     if (value !== null) {
       if (this.contact === "-") {
-        this.$store.commit("createDisburseTag", {name: "left", value: value});
+        this.$store.commit("createDisburseTag", {name: "其它", value: value});
       } else {
-        this.$store.commit("createIncomeTag", {name: "left", value: value});
+        this.$store.commit("createIncomeTag", {name: "其它", value: value});
       }
 
       if (this.$store.state.createTagError) {
@@ -157,7 +157,7 @@ export default class Tags extends Vue {
     width: 25%;
 
     &.selected {
-      color: red;
+      color: $color-label;
     }
 
     ::v-deep svg {
@@ -203,5 +203,9 @@ export default class Tags extends Vue {
 
 .addClass {
   color: red;
+}
+::v-deep svg{
+  width: 32px;
+  height: 32px;
 }
 </style>

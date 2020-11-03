@@ -23,8 +23,20 @@ const store = new Vuex.Store({
       if (!state.disburseTagList || state.disburseTagList.length === 0) {
         store.commit("createDisburseTag", {name: "餐饮 ", value: "餐饮"});
         store.commit("createDisburseTag", {name: "购物", value: "购物"});
-        store.commit("createDisburseTag", {name: "旅游", value: "旅游"});
         store.commit("createDisburseTag", {name: "服饰", value: "服饰"});
+        store.commit("createDisburseTag", {name: "交通 ", value: "交通"});
+        store.commit("createDisburseTag", {name: "住房", value: "住房缴费"});
+        store.commit("createDisburseTag", {name: "生活服务", value: "生活服务"});
+        store.commit("createDisburseTag", {name: "学习", value: "学习"});
+        store.commit("createDisburseTag", {name: "娱乐 ", value: "娱乐"});
+        store.commit("createDisburseTag", {name: "运动", value: "运动"});
+        store.commit("createDisburseTag", {name: "旅游", value: "旅游"});
+        store.commit("createDisburseTag", {name: "酒店", value: "酒店"});
+        store.commit("createDisburseTag", {name: "医疗 ", value: "医疗"});
+        store.commit("createDisburseTag", {name: "宠物", value: "宠物"});
+        store.commit("createDisburseTag", {name: "人情", value: "人情"});
+        store.commit("createDisburseTag", {name: "红包", value: "红包"});
+        store.commit("createDisburseTag", {name: "转账", value: "转账"});
 
       }
     },
@@ -86,9 +98,10 @@ const store = new Vuex.Store({
         window.localStorage.getItem("incomeTagList") || "[]"
       );
       if (!state.incomeTagList || state.incomeTagList.length === 0) {
+        store.commit("createIncomeTag", {name: "退款", value: "退款"});
         store.commit("createIncomeTag", {name: "工资 ", value: "工资"});
         store.commit("createIncomeTag", {name: "转账", value: "转账"});
-        store.commit("createIncomeTag", {name: "退款", value: "退款"});
+        store.commit("createIncomeTag", {name: "人情", value: "人情"});
       }
     },
 

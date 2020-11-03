@@ -8,8 +8,7 @@
     <div class="statistics-center">
       <div class="day">
         <my-line :data-line="lineList" v-if="check(lineList,this.time)"/>
-        <div class="noResult" v-else>
-          无
+        <div  v-else>
         </div>
       </div>
       <ol v-if="check(finallyList,this.time)">
@@ -19,7 +18,7 @@
         <Record :items="finallyList.items" v-if="check(finallyList,this.time)"/>
       </ol>
       <div class="noResult" v-else>
-        无
+        没有任何记录哦
       </div>
     </div>
     <Footer/>
@@ -57,10 +56,13 @@ export default class Statistics extends mixins(CheckDateList) {
 
   get groupedList() {
     const {recordList} = this;
+    if (recordList.length===0) {
+      return [];
+    }
     const newList = clone(recordList)
         .filter((r) => r.type === this.type)
         .sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
-    if (newList.length === 0) {
+    if (newList.length === 0 ) {
       return [];
     }
     const result: Result = [
@@ -110,8 +112,9 @@ export default class Statistics extends mixins(CheckDateList) {
 
   get lineList() {
     const {finallyList} = this;
-    const list = clone(finallyList);
-    if (list !== undefined) {
+
+    if (finallyList !== undefined) {
+      const list = clone(finallyList);
       const items = list.items;
       for (let i = 0; i < items.length - 1; i++) {
         for (let j = i + 1; j < items.length; j++) {
@@ -121,8 +124,11 @@ export default class Statistics extends mixins(CheckDateList) {
           }
         }
       }
+      return list;
+    }else{
+      return undefined;
     }
-    return list;
+
   }
 
 }

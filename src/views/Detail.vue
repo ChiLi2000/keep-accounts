@@ -27,7 +27,7 @@
         </li>
       </ol>
       <div v-else class="noResult">
-        无
+        没有任何记录哦
       </div>
     </div>
     <Footer/>
