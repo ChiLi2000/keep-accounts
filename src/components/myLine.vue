@@ -7,12 +7,10 @@ import Vue from "vue";
 import {Component, Prop, Watch} from "vue-property-decorator";
 
 const echarts = require("echarts");
-// import echarts from 'echarts'
 import "echarts/lib/chart/line";
-import "echarts/lib/component/title";
 import "echarts/lib/component/tooltip";
 import dayjs from "dayjs";
-//
+
 @Component
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export default class myLine extends Vue {
@@ -29,16 +27,13 @@ export default class myLine extends Vue {
     legend: {
       data: []
     },
+    color:
+      ['#808080'],
     grid: {
-      left: "1%", //grid 组件离容器左侧的距离
-      right: "4%", //同理
-      bottom: "3%",
+      left: "0",
+      right: "4%",
+      bottom: "10%",
       containLabel: true
-    },
-    toolbox: {
-      feature: {
-        saveAsImage: {}
-      }
     },
     xAxis: {
       type: "category",
@@ -53,7 +48,6 @@ export default class myLine extends Vue {
       splitLine: {
         show: false
       }
-
     },
     series: [
       {
@@ -76,11 +70,6 @@ export default class myLine extends Vue {
     this.chartLine.setOption(this.options,true)
   }
 
-  // @Watch("options",{deep:true})
-  // onOptions(){
-  //   this.chartLine.setOption(this.options,true)
-  //   console.log(this.options)
-  // }
 changeData(){
   for (let i = 1; i <= dayjs(this.dataLine.title).daysInMonth(); i++) {
     for (let j = 0; j < this.dataLine.items.length; j++) {

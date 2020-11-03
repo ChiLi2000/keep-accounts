@@ -7,20 +7,16 @@
     </div>
     <div class="statistics-center">
       <div class="day">
-        <my-line :data-line="lineList" v-if="check(lineList)"/>
+        <my-line :data-line="lineList" v-if="check(lineList,this.time)"/>
         <div class="noResult" v-else>
           无
         </div>
       </div>
-      <div class="classify">
-        <h3>支出分类</h3>
-        <div>饼状图</div>
-      </div>
-      <ol v-if="check(finallyList)">
+      <ol v-if="check(finallyList,this.time)">
         <h3 class="title">
-          {{ formatTitle(finallyList.title) }}排行榜<span class="type">${{ finallyList.disburseTotal }}</span>
+          {{ formatTitle(finallyList.title,"M月") }}排行榜<span class="type">￥{{ finallyList.disburseTotal }}</span>
         </h3>
-        <Record :items="finallyList.items" v-if="check(finallyList)"/>
+        <Record :items="finallyList.items" v-if="check(finallyList,this.time)"/>
       </ol>
       <div class="noResult" v-else>
         无
@@ -32,17 +28,20 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {Component, Watch} from "vue-property-decorator";
+
+import {Component} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import MyLine from "@/components/myLine.vue";
+import CheckDateList from "@/mixins/CheckDateList";
+import {mixins} from "vue-class-component";
 
 @Component({
   components: {MyLine}
 })
-export default class Statistics extends Vue {
+// eslint-disable-next-line no-undef
+export default class Statistics extends mixins(CheckDateList) {
   recordTypeList = recordTypeList;
   type = "-";
   time = new Date().toISOString();
@@ -51,10 +50,7 @@ export default class Statistics extends Vue {
   created() {
     this.$store.commit("fetchRecords");
   }
-@Watch("finallyList")
-onTest(){
-    console.log(this.finallyList)
-}
+
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -109,23 +105,7 @@ onTest(){
         });
       }
     }
-
     return mouthList;
-  }
-
-
-  check(finallyList: testResult) {
-    if (this.finallyList !== undefined) {
-      //判断月份不对直接 false1,其实一直是有数据但数据错误
-      if (this.finallyList.title === dayjs(this.time).format("YYYY-MM")) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  formatTitle(string: string) {
-    return dayjs(string).format("M月");
   }
 
   get lineList() {
@@ -172,6 +152,9 @@ onTest(){
     flex: 1;
     width: 100%;
     overflow: auto;
+    .day{
+      background-color: #fbfbfb;
+    }
   }
 }
 
@@ -192,9 +175,7 @@ onTest(){
   align-content: center;
   text-align: center;
   line-height: 24px;
-  background-color: #fbfbfb;
   padding: $out-padding;
-
   .type {
     font-size: 14px;
   }
@@ -202,7 +183,6 @@ onTest(){
 
 h3 {
   line-height: 24px;
-  background-color: #fbfbfb;
   padding: $out-padding;
 }
 

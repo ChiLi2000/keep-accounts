@@ -44,9 +44,10 @@ export default class NumberPad extends Vue {
       }
       return;
     }
-    if (this.output.indexOf(".") >= 0 && input === ".") {
+    if (this.output.indexOf(".") >= 0 && (input === "."||this.output[this.output.length-3]==='.')) {
       return;
     }
+
     this.output += input;
   }
 

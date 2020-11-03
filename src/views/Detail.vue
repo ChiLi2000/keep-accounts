@@ -5,19 +5,19 @@
       <ul class="tabs" >
         <li>
           支出
-          <span v-if="check(finallyList)">{{finallyList.disburseTotal}}</span><span v-else class="noResult">0</span>
+          <span v-if="check(finallyList,this.time)">{{finallyList.disburseTotal}}</span><span v-else class="noResult">0</span>
         </li>
         <li>
          收入
-          <span v-if="check(finallyList)">{{finallyList.incomeTotal}}</span><span v-else class="noResult">0</span>
+          <span v-if="check(finallyList,this.time)">{{finallyList.incomeTotal}}</span><span v-else class="noResult">0</span>
         </li>
       </ul>
     </div>
     <div class="detail-center">
-      <ol v-if="check(finallyList)">
+      <ol v-if="check(finallyList,this.time)">
         <li v-for="(group,index) in finallyList.items" :key="index">
           <h3 class="title">
-            {{ formatTitle(group.title) }}<span class="type">支出：￥{{ group.disburseTotal }} 收入：￥{{
+            {{ formatTitle(group.title,"M月D日") }}<span class="type">支出：￥{{ group.disburseTotal }} 收入：￥{{
               group.incomeTotal
             }} </span>
           </h3>
@@ -36,33 +36,19 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import {Component} from "vue-property-decorator";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
+import {mixins} from "vue-class-component";
+import CheckDateList from "@/mixins/CheckDateList";
 
 @Component
-export default class Detail extends Vue {
+export default class Detail extends mixins(CheckDateList) {
   time = new Date().toISOString();
   placeholder = dayjs(new Date().toISOString()).format("YYYY-MM");
 
   created() {
     this.$store.commit("fetchRecords");
-    console.log(this.finallyList)
-  }
-
-  check(finallyList: {
-    title: string;
-    disburseTotal?: number;
-    incomeTotal?: number;
-    items: Result;
-  }) {
-    if(this.finallyList!==undefined){
-      if (this.finallyList.title === dayjs(this.time).format("YYYY-MM")) {
-        return true;
-      }
-    }
-    return false;
   }
 
   get recordList() {
@@ -106,11 +92,6 @@ export default class Detail extends Vue {
     });
     return result;
   }
-
-  formatTitle(string: string) {
-    return dayjs(string).format("M月D日");
-  }
-
   get mouthGroupedList() {
     const {groupedList} = this;
     if (groupedList.length === 0) {
@@ -185,6 +166,7 @@ export default class Detail extends Vue {
   .detail-top {
     //height: 121px;
     background-color: $color-shadow;
+
   }
 
   .detail-center {
@@ -218,7 +200,6 @@ export default class Detail extends Vue {
   align-content: center;
   text-align: center;
   line-height: 24px;
-  background-color: #fbfbfb;
   padding: $out-padding;
 
   .type {
