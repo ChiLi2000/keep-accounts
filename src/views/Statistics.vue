@@ -6,7 +6,7 @@
       </Tabs>
     </div>
     <div class="statistics-center">
-      <div class="day">
+      <div class="myLine-wrapper">
         <my-line :data-line="lineList" v-if="check(lineList,this.time)"/>
         <div  v-else>
         </div>
@@ -18,7 +18,7 @@
         <Record :items="finallyList.items" v-if="check(finallyList,this.time)"/>
       </ol>
       <div class="noResult" v-else>
-        没有任何记录哦
+        没有任何收支记录哦
       </div>
     </div>
     <Footer/>
@@ -48,6 +48,7 @@ export default class Statistics extends mixins(CheckDateList) {
 
   created() {
     this.$store.commit("fetchRecords");
+    console.log(this.lineList)
   }
 
   get recordList() {
@@ -112,7 +113,6 @@ export default class Statistics extends mixins(CheckDateList) {
 
   get lineList() {
     const {finallyList} = this;
-
     if (finallyList !== undefined) {
       const list = clone(finallyList);
       const items = list.items;
@@ -158,7 +158,8 @@ export default class Statistics extends mixins(CheckDateList) {
     flex: 1;
     width: 100%;
     overflow: auto;
-    .day{
+    .myLine-wrapper{
+      overflow: auto;
       background-color: #fbfbfb;
     }
   }
