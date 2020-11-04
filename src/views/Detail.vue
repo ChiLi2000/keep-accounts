@@ -27,7 +27,7 @@
         </li>
       </ol>
       <div v-else class="noResult">
-        没有任何收支记录哦
+        当月没有任何记录哦
       </div>
     </div>
     <Footer/>

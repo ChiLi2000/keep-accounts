@@ -18,7 +18,7 @@
         <Record :items="finallyList.items" v-if="check(finallyList,this.time)"/>
       </ol>
       <div class="noResult" v-else>
-        没有任何收支记录哦
+        当月没有任何记录哦
       </div>
     </div>
     <Footer/>
@@ -47,8 +47,7 @@ export default class Statistics extends mixins(CheckDateList) {
   placeholder = dayjs(new Date().toISOString()).format("YYYY-MM");
 
   created() {
-    this.$store.commit("fetchRecords");
-    console.log(this.lineList)
+    this.$store.commit("fetchRecords")
   }
 
   get recordList() {

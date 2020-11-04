@@ -5,6 +5,7 @@
         :type="type"
         :placeholder="placeholder"
         :format="format"
+        :editable="false"
         >
     </el-date-picker>
   </div>

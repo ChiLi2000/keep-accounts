@@ -4,7 +4,7 @@
       <div class="navbar">
         <Icon class="leftIcon" name="left" @click.native="goBack"/>
         <span class="title">记账</span>
-        <span>.</span>
+        <span></span>
       </div>
       <div class="smart">
         <Tabs :data-source="recordTypeList" :value.sync="record.type" class-prefix="tabs"/>
@@ -60,8 +60,8 @@ export default class Account extends Vue {
   saveRecord() {
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
-      window.alert("一记一笔");
-      location.reload();
+      window.alert("已记一笔");
+      this.$router.push({ path: '/' })
     }
   }
 
@@ -106,7 +106,6 @@ export default class Account extends Vue {
   @extend %item;
   padding: $out-padding;
   border-bottom: 1px solid gray;
-
   svg {
     width: 28px;
     height: 28px;

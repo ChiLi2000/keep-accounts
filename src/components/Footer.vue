@@ -32,6 +32,7 @@ export default {
   display: flex;
   flex-direction: row;
   font-size: 12px;
+   padding:6px 0;
   .item{
     display: flex;
     justify-content: center;
