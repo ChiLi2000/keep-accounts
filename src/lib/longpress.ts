@@ -29,7 +29,7 @@ const directive: DirectiveOptions = {
         pressTimer = setTimeout(() => {
           // 执行函数
           handler(e);
-        }, 1000);
+        }, 500);
       }
     };
 
@@ -40,7 +40,13 @@ const directive: DirectiveOptions = {
         pressTimer = null;
       }
     };
-
+    document.oncontextmenu = function (event) {
+      event.preventDefault();
+      return false;
+    };
+    el.addEventListener('contextmenu',function (e){
+      e.preventDefault()
+    })
     el.addEventListener("mousedown", start);
     el.addEventListener("touchstart", start);
     el.addEventListener("click", cancel);
