@@ -35,8 +35,9 @@ import {Component, Prop, Watch} from "vue-property-decorator";
 import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
-  "tag name null": "标签名不能为空",
-  "tag name duplicated": "标签名重复了"
+  "tag name null": "类别名不能为空",
+  "tag name duplicated": "类别名重复了",
+  "tag name lengthOver": "类别名超长了"
 
 };
 @Component({
@@ -115,7 +116,7 @@ export default class Tags extends Vue {
 
 
   createTag() {
-    const value = window.prompt("请输入标签名");
+    const value = window.prompt("请输入类别名","类别名4字以内且不重复");
     if (value !== null) {
       if (this.contact === "-") {
         this.$store.commit("createDisburseTag", {name: "其它", value: value});

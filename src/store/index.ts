@@ -48,7 +48,10 @@ const store = new Vuex.Store({
       if(!value){
         state.createTagError = new Error("tag name null");
         return;
-      } else if (values.indexOf(value) >= 0) {
+      }else if(value.length>4){
+        state.createTagError = new Error("tag name lengthOver");
+        return;
+      }else if (values.indexOf(value) >= 0) {
         state.createTagError = new Error("tag name duplicated");
         return;
       }
@@ -109,7 +112,13 @@ const store = new Vuex.Store({
       const {name,value} = payload
       state.createTagError = null;
       const values = state.incomeTagList.map((item) => item.value);
-      if (values.indexOf(value) >= 0) {
+      if(!value){
+        state.createTagError = new Error("tag name null");
+        return;
+      }else if(value.length>4){
+        state.createTagError = new Error("tag name lengthOver");
+        return;
+      } else if(values.indexOf(value) >= 0) {
         state.createTagError = new Error("tag name duplicated");
         return;
       }
