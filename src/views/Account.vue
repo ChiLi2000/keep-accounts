@@ -1,5 +1,5 @@
 <template>
-  <div class="outer">
+  <div class="outer"  :style="{height:h+'px'}">
     <div class="account-top">
       <div class="navbar">
         <Icon class="leftIcon" name="left" @click.native="goBack"/>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Watch} from "vue-property-decorator";
+import {Component} from "vue-property-decorator";
 import NumberPad from "@/components/Account/NumberPad.vue";
 import Tags from "@/components/Account/Tags.vue";
 import recordTypeList from "@/constants/recordTypeList";
@@ -41,6 +41,7 @@ import dayjs from "dayjs";
   components: {Tags, NumberPad}
 })
 export default class Account extends Vue {
+  h = document.body.clientHeight;
   record: RecordItem = {
     tag: {id: "0", name: "其它", value: "其它"},
     note: "",
