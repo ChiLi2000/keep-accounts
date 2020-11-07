@@ -16,16 +16,16 @@ import dayjs from "dayjs";
 export default class myLine extends Vue {
   @Prop() public readonly title!: string;
   @Prop() dataLine!: testResult;
-  chartLine = null;
+  chartLine: any = null;
   options = {
     title: {
       text: ""
     },
     tooltip: {
       trigger: "axis",
-      position:"top",
-      triggerOn:'click',
-      formatter:'{c}'
+      position: "top",
+      triggerOn: "click",
+      formatter: "{c}"
     },
     legend: {
       data: [""]
@@ -40,9 +40,9 @@ export default class myLine extends Vue {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: [],
+      data: [] as any,
       axisTick: {alignWidthLabel: true},
-      axisLine:{lineStyle:{color: "#666"}},
+      axisLine: {lineStyle: {color: "#666"}},
     },
     yAxis: {
       type: "value",
@@ -64,7 +64,7 @@ export default class myLine extends Vue {
       },
       name: "",
       type: "line",
-      data: []
+      data: [] as any
     }
     ]
   };
@@ -78,12 +78,14 @@ export default class myLine extends Vue {
     this.options.xAxis.data = [];
     this.options.series[0].data = [];
     this.changeData();
-    this.chartLine.setOption(this.options, true);
+    if (this.chartLine) {
+      this.chartLine.setOption(this.options, true);
+    }
   }
 
   changeData() {
     for (let i = 1; i <= dayjs(this.dataLine.title).daysInMonth(); i++) {
-      let t=0;
+      let t = 0;
       for (let j = 0; j < this.dataLine.items.length; j++) {
         if (i === dayjs(this.dataLine.items[j].createAt).date()) {
           t++;
@@ -92,10 +94,10 @@ export default class myLine extends Vue {
           break;
         }
       }
-       if(t===0){
-         this.options.xAxis.data.push(i + "日");
-         this.options.series[0].data.push(0);
-       }
+      if (t === 0) {
+        this.options.xAxis.data.push(i + "日");
+        this.options.series[0].data.push(0);
+      }
     }
   }
 
@@ -104,7 +106,9 @@ export default class myLine extends Vue {
     // 执行图表对象的初始化
     this.chartLine = echarts.init(document.getElementById("chartLine"));
     // 为图标表对象赋值
-    this.chartLine.setOption(this.options, true);
+    if (!this.chartLine) {
+      this.chartLine.setOption(this.options, true);
+    }
   }
 }
 </script>
