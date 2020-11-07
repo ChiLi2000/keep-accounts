@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="account-center">
-      <Tags :contact.sync="record.type" :selectTag.sync="record.tag"></Tags>
+      <Tags :contact.sync="record.type" :selectTag.sync="record.tag" :valueType="record.type"></Tags>
     </div>
     <div class="account-bottom">
       <div class="formItem">
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component} from "vue-property-decorator";
+import {Component,Watch} from "vue-property-decorator";
 import NumberPad from "@/components/Account/NumberPad.vue";
 import Tags from "@/components/Account/Tags.vue";
 import recordTypeList from "@/constants/recordTypeList";
@@ -43,7 +43,7 @@ import dayjs from "dayjs";
 export default class Account extends Vue {
   h = document.body.clientHeight;
   record: RecordItem = {
-    tag: {id: "0", name: "其它", value: "其它"},
+    tag:{id: "1", name: "餐饮 ", value: "餐饮"},
     note: "",
     type: "-",
     amount: 0,
@@ -53,11 +53,18 @@ export default class Account extends Vue {
   // time = new Date().toISOString();
   placeholder = dayjs(new Date().toISOString()).format("MM-DD");
   recordTypeList = recordTypeList;
-
+@Watch("record.type")
+onType(){
+  if(this.record.type==='-'){
+    this.record.tag = {id: "1", name: "餐饮 ", value: "餐饮"}
+  }else{
+    this.record.tag = {id: "17", name: "退款", value: "退款"}
+  }
+}
   created() {
     this.$store.commit("fetchRecords");
+    this.$store.commit("fetchDisburseTags")
   }
-
   saveRecord() {
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {

@@ -13,7 +13,7 @@
       </div>
       <ol v-if="check(finallyList,this.time)">
         <h3 class="title">
-          {{ formatTitle(finallyList.title,"M月") }}排行榜<span class="type">￥{{ numberFilter(finallyList.disburseTotal) }}</span>
+          {{ formatTitle(finallyList.title,"M月") }}排行榜
         </h3>
         <Record :items="finallyList.items" v-if="check(finallyList,this.time)"/>
       </ol>
@@ -182,9 +182,6 @@ export default class Statistics extends mixins(CheckDateList) {
   text-align: center;
   line-height: 24px;
   padding: $out-padding;
-  .type {
-    font-size: 14px;
-  }
 }
 
 h3 {

@@ -2,9 +2,9 @@
   <ul class="tags">
     <li v-for="tag in tagList"
         :key="tag.id"
-        v-longpress="showTest(`${tag.id}`,`${tag.value}`)"
+        v-longpress="addLiFlag(tag.id) && showTest(`${tag.id}`,`${tag.value}`)"
         @click="toggle(tag)"
-        :class="{selected:tag === selectedTagAdd }"
+        :class="{selected:tag.id === selectedTagAdd.id}"
     >
       <Icon :name="`${tag.name}`"/>
       {{ tag.value }}
@@ -21,9 +21,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="remove()">删除</el-button>
+        <el-button @click="remove">删除</el-button>
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="updateTag()">确 定</el-button>
+        <el-button type="primary" @click="updateTag">确 定</el-button>
       </div>
     </el-dialog>
   </ul>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Prop} from "vue-property-decorator";
+import {Component, Prop,Watch} from "vue-property-decorator";
 import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
@@ -45,16 +45,29 @@ const map: { [key: string]: string } = {
 })
 export default class Tags extends Vue {
   @Prop(String) readonly contact!: string;
-
+  @Prop(String) readonly valueType!: string;
   @Prop() selectTag!: Tag;
   selectedTagAdd: Tag = this.selectTag;
   showDialog = false;
   middleName = "";
   middleId = "";
 
+@Watch("valueType")
+onType(){
+  if(this.valueType === '-'){
+    this.selectedTagAdd = this.$store.state.disburseTagList[0];
+  }else{
+    this.selectedTagAdd = this.$store.state.incomeTagList[0];
+  }
+}
+  addLiFlag(id: string) {
+    return parseInt(id) > 20;
+  }
+
   created() {
     this.$store.commit("fetchDisburseTags");
     this.$store.commit("fetchIncomeTags");
+    // console.log(this.selectTag)
   }
 
   showTest(id: string, value: string) {
@@ -80,6 +93,7 @@ export default class Tags extends Vue {
         id: this.middleId,
         value: this.middleName,
       });
+
     } else {
       this.$store.commit("updateIncomeTag", {
         id: this.middleId,
@@ -98,11 +112,14 @@ export default class Tags extends Vue {
   remove() {
     if (this.contact === "-") {
       this.$store.commit("removeDisburseTag", this.middleId);
+      this.toggle(this.$store.state.disburseTagList[0]);
     } else {
       this.$store.commit("removeIncomeTag", this.middleId);
+      this.toggle(this.$store.state.incomeTagList[0]);
     }
     window.alert("删除成功");
     this.cancel();
+
   }
 
   get tagList(): Tag[] {
