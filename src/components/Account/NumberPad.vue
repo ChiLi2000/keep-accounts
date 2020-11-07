@@ -30,8 +30,8 @@ export default class NumberPad extends Vue {
   output = this.value.toString();
 
   inputContent(event: MouseEvent) {
-    const button = event.target as HTMLButtonElement;
-    const input = button.textContent!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const input = (event.target as HTMLButtonElement).textContent!;
 
     if (this.output.length === 16) {
       return;

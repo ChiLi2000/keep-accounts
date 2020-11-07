@@ -6,8 +6,7 @@ const directive: DirectiveOptions = {
     // 确保提供的表达式是函数
     if (typeof binding.value !== "function") {
       // 获取组件名称
-      const name = vNode.context;
-      const compName = name;
+      const compName = vNode.context;
       // 将警告传递给控制台
       let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be `;
       if (compName) {
@@ -46,7 +45,7 @@ const directive: DirectiveOptions = {
     };
     el.addEventListener('contextmenu',function (e){
       e.preventDefault()
-    })
+    },false)
     el.addEventListener("mousedown", start);
     el.addEventListener("touchstart", start);
     el.addEventListener("click", cancel);

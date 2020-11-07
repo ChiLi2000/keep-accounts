@@ -23,7 +23,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="remove()">删除</el-button>
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="update()">确 定</el-button>
+        <el-button type="primary" @click="updateTag()">确 定</el-button>
       </div>
     </el-dialog>
   </ul>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Prop, Watch} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
 import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
@@ -52,11 +52,11 @@ export default class Tags extends Vue {
   middleName = "";
   middleId = "";
 
-
   created() {
     this.$store.commit("fetchDisburseTags");
     this.$store.commit("fetchIncomeTags");
   }
+
   showTest(id: string, value: string) {
     return () => {
       this.middleId = id;
@@ -74,7 +74,7 @@ export default class Tags extends Vue {
     this.$emit("change", this.middleName);
   }
 
-  update() {
+  updateTag() {
     if (this.contact === "-") {
       this.$store.commit("updateDisburseTag", {
         id: this.middleId,
@@ -114,9 +114,8 @@ export default class Tags extends Vue {
   }
 
 
-
   createTag() {
-    const value = window.prompt("请输入类别名","类别名4字以内且不重复");
+    const value = window.prompt("请输入类别名", "类别名4字以内且不重复");
     if (value !== null) {
       if (this.contact === "-") {
         this.$store.commit("createDisburseTag", {name: "其它", value: value});
@@ -134,7 +133,7 @@ export default class Tags extends Vue {
 
   toggle(tag: Tag) {
     this.$emit("update:selectTag", tag);
-    this.selectedTagAdd = tag
+    this.selectedTagAdd = tag;
   }
 }
 </script>
@@ -205,7 +204,8 @@ export default class Tags extends Vue {
 .addClass {
   color: red;
 }
-::v-deep svg{
+
+::v-deep svg {
   width: 32px;
   height: 32px;
 }
