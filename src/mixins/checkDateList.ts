@@ -16,6 +16,10 @@ export class CheckDateList extends Vue {
   formatTitle(string: string, type: string) {
     return dayjs(string).format(type);
   }
+
+  numberFilter(value: any) {
+    return parseFloat(value).toFixed(2);
+  }
 }
 
 export default CheckDateList;

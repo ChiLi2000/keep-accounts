@@ -5,17 +5,18 @@
       <Icon :name="`${item.tag.name}`" class="icon"/>
       <p>{{ item.tag.value }}<span class="note">{{ item.note }}</span></p>
     </div>
-    <p class="right">￥{{ item.amount }}</p>
+    <p class="right">￥{{ numberFilter(item.amount) }}</p>
   </li>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import {Component, Prop} from "vue-property-decorator";
+import {mixins} from "vue-class-component";
+import CheckDateList from "@/mixins/CheckDateList";
 
 @Component
-export default class Record extends Vue {
+export default class Record extends mixins(CheckDateList) {
   @Prop() items!: RecordItem;
 }
 </script>

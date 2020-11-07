@@ -3,13 +3,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {Component, Prop, Watch} from "vue-property-decorator";
 
+import {Component, Prop, Watch} from "vue-property-decorator";
 const echarts = require("echarts");
 import "echarts/lib/chart/line";
 import "echarts/lib/component/tooltip";
 import dayjs from "dayjs";
+import Vue from 'vue'
 
 @Component
 // eslint-disable-next-line @typescript-eslint/class-name-casing
@@ -88,7 +88,7 @@ export default class myLine extends Vue {
         if (i === dayjs(this.dataLine.items[j].createAt).date()) {
           t++;
           this.options.xAxis.data.push(i + "日");
-          this.options.series[0].data.push(this.dataLine.items[j].amount);
+          this.options.series[0].data.push(parseFloat(this.dataLine.items[j].amount.toString()).toFixed(2));
           break;
         }
       }

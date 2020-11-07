@@ -2,14 +2,16 @@
   <div class="outer">
     <div class="detail-top">
       <Date :value.sync="time" :placeholder="placeholder" type="month" format="yyyy-MM" class-prefix="date"/>
-      <ul class="tabs" >
+      <ul class="tabs">
         <li>
           支出
-          <span v-if="check(finallyList,this.time)">{{finallyList.disburseTotal}}</span><span v-else class="noResult">0</span>
+          <span v-if="check(finallyList,this.time)">{{ numberFilter(finallyList.disburseTotal) }}</span><span v-else
+                                                                                                              class="noResult">0</span>
         </li>
         <li>
-         收入
-          <span v-if="check(finallyList,this.time)">{{finallyList.incomeTotal}}</span><span v-else class="noResult">0</span>
+          收入
+          <span v-if="check(finallyList,this.time)">{{ numberFilter(finallyList.incomeTotal) }}</span><span v-else
+                                                                                                            class="noResult">0</span>
         </li>
       </ul>
     </div>
@@ -17,9 +19,11 @@
       <ol v-if="check(finallyList,this.time)">
         <li v-for="(group,index) in finallyList.items" :key="index">
           <h3 class="title">
-            {{ formatTitle(group.title,"M月D日") }}<span class="type">支出：￥{{ group.disburseTotal }} 收入：￥{{
-              group.incomeTotal
-            }} </span>
+            {{ formatTitle(group.title, "M月D日") }}
+            <span class="type">
+              支出：￥{{ numberFilter(group.disburseTotal) }} 收入：￥{{
+                numberFilter(group.incomeTotal)
+              }} </span>
           </h3>
           <ol>
             <Record :items="group.items"/>
@@ -47,6 +51,9 @@ export default class Detail extends mixins(CheckDateList) {
   time = new Date().toISOString();
   placeholder = dayjs(new Date().toISOString()).format("YYYY-MM");
 
+  // numberFilter(value){
+  //   return parseFloat(value).toFixed(2)
+  // }
   created() {
     this.$store.commit("fetchRecords");
   }
@@ -92,6 +99,7 @@ export default class Detail extends mixins(CheckDateList) {
     });
     return result;
   }
+
   get mouthGroupedList() {
     const {groupedList} = this;
     if (groupedList.length === 0) {
@@ -135,10 +143,10 @@ export default class Detail extends mixins(CheckDateList) {
   }
 
   get finallyList() {
-    if(this.mouthGroupedList===undefined){
+    if (this.mouthGroupedList === undefined) {
       return undefined;
     }
-    let mouthList = this.mouthGroupedList[0]
+    let mouthList = this.mouthGroupedList[0];
     for (let i = 0; i < this.mouthGroupedList.length; i++) {
       if (this.mouthGroupedList[i].title === dayjs(this.time).format("YYYY-MM")) {
         mouthList = this.mouthGroupedList[i];
@@ -188,6 +196,7 @@ export default class Detail extends mixins(CheckDateList) {
     padding: $padding-radio;
     margin: $out-margin;
   }
+
   span {
     font-size: 28px;
     font-weight: $font-height;
