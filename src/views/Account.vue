@@ -1,5 +1,5 @@
 <template>
-  <div class="outer"  :style="{height:h+'px'}">
+  <div class="outer" :style="{height:h+'px'}">
     <div class="account-top">
       <div class="navbar">
         <Icon class="leftIcon" name="left" @click.native="goBack"/>
@@ -21,7 +21,9 @@
               type="text"
               placeholder="请输入备注"
               v-model="record.note"
+              @input="overLength"
           />
+          <span class="msg">{{ record.note.length }} / 10</span>
         </label>
       </div>
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
@@ -31,7 +33,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component,Watch} from "vue-property-decorator";
+import {Component, Watch} from "vue-property-decorator";
 import NumberPad from "@/components/Account/NumberPad.vue";
 import Tags from "@/components/Account/Tags.vue";
 import recordTypeList from "@/constants/recordTypeList";
@@ -43,7 +45,7 @@ import dayjs from "dayjs";
 export default class Account extends Vue {
   h = document.body.clientHeight;
   record: RecordItem = {
-    tag:{id: "1", name: "餐饮 ", value: "餐饮"},
+    tag: {id: "1", name: "餐饮 ", value: "餐饮"},
     note: "",
     type: "-",
     amount: 0,
@@ -53,28 +55,36 @@ export default class Account extends Vue {
   // time = new Date().toISOString();
   placeholder = dayjs(new Date().toISOString()).format("MM-DD");
   recordTypeList = recordTypeList;
-@Watch("record.type")
-onType(){
-  if(this.record.type==='-'){
-    this.record.tag = {id: "1", name: "餐饮 ", value: "餐饮"}
-  }else{
-    this.record.tag = {id: "17", name: "退款", value: "退款"}
+
+  overLength() {
+    this.record.note = this.record.note.substring(0, 10);
+    this.$emit("change", this.record.note);
   }
-}
+
+  @Watch("record.type")
+  onType() {
+    if (this.record.type === "-") {
+      this.record.tag = {id: "1", name: "餐饮 ", value: "餐饮"};
+    } else {
+      this.record.tag = {id: "17", name: "退款", value: "退款"};
+    }
+  }
+
   created() {
     this.$store.commit("fetchRecords");
-    this.$store.commit("fetchDisburseTags")
+    this.$store.commit("fetchDisburseTags");
   }
+
   saveRecord() {
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("已记一笔");
-      this.$router.push({ path: '/' })
+      this.$router.push({path: "/"});
     }
   }
 
-  goBack(){
-    this.$router.back()
+  goBack() {
+    this.$router.back();
   }
 }
 </script>
@@ -114,6 +124,7 @@ onType(){
   @extend %item;
   padding: $out-padding;
   border-bottom: 1px solid gray;
+
   svg {
     width: 28px;
     height: 28px;
@@ -122,6 +133,7 @@ onType(){
 
 .smart {
   @extend %item;
+
   ::v-deep .date-wrapper {
     .el-date-editor.el-input {
       width: 80px;
@@ -150,26 +162,29 @@ onType(){
     }
   }
 }
-
-.account-center {
-  //background-color: $color-shadow;
-}
-
 .formItem {
   font-size: 14px;
   padding: 8px 0;
-
-  input {
-    width: 100vw;
-    height: 40px;
-    background: transparent;
-    border: none;
-    padding: 0 16px;
-
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input {
+      flex-grow: 1;
+      height: 40px;
+      background: transparent;
+      border: none;
+      padding-left:16px;
+    }
+    .msg {
+      text-align: right;
+      font-size: 12px;
+      color: #999999;
+      padding-right:16px;
+    }
   }
+
 }
-
-
 
 
 </style>
