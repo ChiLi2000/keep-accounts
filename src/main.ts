@@ -16,16 +16,16 @@ Vue.config.productionTip = false;
 
 Vue.component("Footer", Footer);
 Vue.component("Icon", Icon);
-Vue.component("Date", Date);
 Vue.component("Tabs", Tabs);
 Vue.component("Record", Record);
+Vue.component("Date",Date)
 
 
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount("#app");
+}).$mount("#app");//
 
 if(document.documentElement.clientWidth>800){
   const img = document.createElement('img');

@@ -78,7 +78,7 @@ export default class myLine extends Vue {
     this.options.xAxis.data = [];
     this.options.series[0].data = [];
     this.changeData();
-      this.chartLine.setOption(this.options, true);
+    this.chartLine.setOption(this.options, true);
   }
 
   changeData() {
@@ -104,9 +104,7 @@ export default class myLine extends Vue {
     // 执行图表对象的初始化
     this.chartLine = echarts.init(document.getElementById("chartLine"));
     // 为图标表对象赋值
-
-      this.chartLine.setOption(this.options, true);
-
+    this.chartLine.setOption(this.options, true);
   }
 }
 </script>
