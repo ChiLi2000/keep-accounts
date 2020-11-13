@@ -61,7 +61,7 @@ onType(){
   }
 }
   addLiFlag(id: string) {
-    return parseInt(id) > 20;
+    return parseInt(id) > 22;
   }
 
   created() {
