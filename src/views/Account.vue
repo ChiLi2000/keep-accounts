@@ -108,6 +108,10 @@ export default class Account extends Vue {
   .account-center {
     flex: 1;
     width: 100%;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     overflow: auto;
     background-color: #ffffff;
   }

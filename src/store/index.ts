@@ -20,10 +20,9 @@ const store = new Vuex.Store({
       state.disburseTagList = JSON.parse(
         window.localStorage.getItem("disburseTagList") || "[]"
       );
-      if (!state.disburseTagList || state.disburseTagList.length === 0) {
         store.commit("createDisburseTag", {name: "餐饮 ", value: "餐饮"});
         store.commit("createDisburseTag", {name: "购物", value: "购物"});
-        store.commit("createDisburseTag", {name: "服饰", value: "服饰"});
+        store.commit("createDisburseTag", {name: "服饰美容", value: "服饰美容"});
         store.commit("createDisburseTag", {name: "交通 ", value: "交通"});
         store.commit("createDisburseTag", {name: "住房", value: "住房缴费"});
         store.commit("createDisburseTag", {name: "生活服务", value: "生活服务"});
@@ -39,7 +38,7 @@ const store = new Vuex.Store({
         store.commit("createDisburseTag", {name: "转账", value: "转账"});
         store.commit("createDisburseTag", {name: "其它", value: "其它"});
 
-      }
+
     },
 
     createDisburseTag(state, payload: { name: string; value: string }) {
@@ -101,13 +100,11 @@ const store = new Vuex.Store({
       state.incomeTagList = JSON.parse(
         window.localStorage.getItem("incomeTagList") || "[]"
       );
-      if (!state.incomeTagList || state.incomeTagList.length === 0) {
         store.commit("createIncomeTag", {name: "退款", value: "退款"});
         store.commit("createIncomeTag", {name: "工资 ", value: "工资"});
         store.commit("createIncomeTag", {name: "转账", value: "转账"});
         store.commit("createIncomeTag", {name: "人情", value: "人情"});
         store.commit("createIncomeTag", {name: "其它", value: "其它"});
-      }
     },
 
     createIncomeTag(state, payload: { name: string; value: string }) {
